@@ -316,7 +316,7 @@ namespace ws_client
 
         private decimal parseDecimal(string number)
         {
-            return Decimal.Parse(number, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.NumberFormatInfo.InvariantInfo);
+            return Decimal.Parse(number, System.Globalization.NumberStyles.Float, System.Globalization.NumberFormatInfo.InvariantInfo);
         }
 
         private byte[] ComputeHash(string secret, byte[] message)
