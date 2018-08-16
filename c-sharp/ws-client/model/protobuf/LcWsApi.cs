@@ -360,10 +360,10 @@ namespace protobuf.ws
         private string __pbn__CurrencyPair;
 
         [global::ProtoBuf.ProtoMember(3)]
-        [global::System.ComponentModel.DefaultValue(Direction.Ask)]
+        [global::System.ComponentModel.DefaultValue(Direction.Asc)]
         public Direction direction
         {
-            get { return __pbn__direction ?? Direction.Ask; }
+            get { return __pbn__direction ?? Direction.Asc; }
             set { __pbn__direction = value; }
         }
         public bool ShouldSerializedirection() => __pbn__direction != null;
@@ -393,8 +393,8 @@ namespace protobuf.ws
         [global::ProtoBuf.ProtoContract()]
         public enum Direction
         {
-            [global::ProtoBuf.ProtoEnum(Name = @"ASK")]
-            Ask = 1,
+            [global::ProtoBuf.ProtoEnum(Name = @"ASC")]
+            Asc = 1,
             [global::ProtoBuf.ProtoEnum(Name = @"DESC")]
             Desc = 2,
         }
