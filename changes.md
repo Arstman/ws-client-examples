@@ -3,7 +3,7 @@
    - CLIENT_ORDER;
    - COMMISSION;
    - COMMISSION_COMMON_INFO;
-   - HISTORY;
+   - TRADE_HISTORY;
    - MARKET_ORDER;
 # 2018-08-15
  + Added private api TRADES and CLIENT_ORDERS requests
