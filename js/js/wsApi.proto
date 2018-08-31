@@ -114,7 +114,7 @@ message BalanceRequest {
 
 // Weight is 1 point when currency is given, 5 points for "all currencies"
 message BalancesRequest {
-     // BALANCES
+    // BALANCES
     required RequestExpired expire_control = 1;
     optional string currency = 2;
     optional bool only_not_zero = 3;
@@ -124,8 +124,8 @@ message BalancesRequest {
 message LastTradesRequest{
     // LAST_TRADES
     enum TradeType {
-       SELL = 1;
-       BUY = 2;
+        SELL = 1;
+        BUY = 2;
     }
     enum Interval {
         MINUTE = 1;
@@ -140,7 +140,7 @@ message LastTradesRequest{
 
 // Weight is 1 point when currency is given, 5 points for "all currencies"
 message TradesRequest{
-    //TRADES
+    // TRADES
 
     enum Direction {
         ASC = 1;
@@ -156,7 +156,7 @@ message TradesRequest{
 
 // Weight is 1 point when currency is given, 5 points for "all currencies"
 message ClientOrdersRequest{
-    //CLIENT_ORDERS
+    // CLIENT_ORDERS
     enum OrderStatus{
         OPEN = 1;
         CLOSED = 2;
@@ -176,6 +176,54 @@ message ClientOrdersRequest{
     optional OrderType order_type = 6;
     optional int32 start_row = 7;
     optional int32 end_row = 8;
+}
+
+message ClientOrderRequest {
+    // CLIENT_ORDER
+    required RequestExpired expire_control = 1;
+    required int64 order_id = 2;
+    required string currency_pair = 3;
+}
+
+message CommissionRequest {
+    // COMMISSION
+    required RequestExpired expire_control = 1;
+}
+
+message CommissionCommonInfoRequest {
+    // COMMISSION_COMMON_INFO
+    required RequestExpired expire_control = 1;
+}
+
+message TradeHistoryRequest {
+    // TRADE_HISTORY
+    enum Types {
+        BUY = 1;
+        SELL = 2;
+        DEPOSIT = 3;
+        WITHDRAWAL = 4;
+        BET = 5;
+        RETRIEVE = 6;
+        PRIZE = 7;
+        REFERRAL_BET = 8;
+        REFERRAL = 9;
+        DEPOSIT_VOUCHER = 10;
+        WITHDRAWAL_VOUCHER = 11;
+    }
+    required RequestExpired expire_control = 1;
+    required int64 start = 2;
+    required int64 end = 3;
+    repeated Types types = 4;
+    optional int32 limit = 5;
+    optional int32 offset = 6;
+}
+
+message MarkerOrderRequest {
+    // MARKET_ORDER
+    required RequestExpired expire_control = 1;
+    required string currency_pair = 2;
+    required string amount = 3;
+    required ClientOrdersRequest.OrderType orderType = 4;
 }
 
 message TickerEvent {
@@ -347,10 +395,10 @@ message CancelLimitOrderResponse {
 message BalanceResponse {
     // BALANCE_RESPONSE
     enum BalanceType {
-      TOTAL = 1;
-      AVAILABLE = 2;
-      AVAILABLE_WITHDRAWAL = 3;
-      TRADE = 4;
+        TOTAL = 1;
+        AVAILABLE = 2;
+        AVAILABLE_WITHDRAWAL = 3;
+        TRADE = 4;
     }
     required BalanceType type = 1;
     required string currency = 2;
@@ -390,6 +438,7 @@ message Order {
         LIMIT_BUY = 3;
         LIMIT_SELL = 4;
         UNKNOWN_TYPE = 5;
+        MARKET_BUY_IN_FULL_AMOUNT = 6;
     }
     enum OrderStatus {
         NEW = 1;
@@ -400,6 +449,7 @@ message Order {
         PARTIALLY_FILLED = 6;
         PARTIALLY_FILLED_AND_CANCELLED = 7;
         PARTIALLY_FILLED_AND_EXPIRED = 8;
+        UNKNOWN_STATUS = 9;
     }
     required int64 id = 1;
     required string currency_pair = 2;
@@ -418,10 +468,77 @@ message Order {
 }
 
 message ClientOrdersResponse {
+    // CLIENT_ORDERS_RESPONSE
     required int32 totalRows = 1;
     required int32 startRow = 2;
     required int32 endRow = 3;
     repeated Order orders = 4;
+}
+
+message Trades {
+    required int32 trades = 1;
+    required string amount = 2;
+    required string quantity = 3;
+    required string avg_price = 4;
+    required string commission = 5;
+    required string bonus = 6;
+}
+
+message ClientOrderResponse {
+    // CLIENT_ORDER_RESPONSE
+    required int64 id = 1;
+    required Order.OrderStatus order_status = 2;
+    required string currencyPair = 3;
+    required string price = 4;
+    required string quantity = 5;
+    required string remaining_quantity = 6;
+    required string blocked = 7;
+    required string blocked_remain = 8;
+    required string commission_rate = 9;
+    optional Trades trades = 10;
+}
+
+message CommissionResponse {
+    // COMMISSION_RESPONSE
+    required string value = 1;
+}
+
+message CommissionCommonInfoResponse {
+    // COMMISSION_COMMON_INFO_RESPONSE
+    required string commission = 1;
+    required string last30_days_amount_as_usd = 2;
+}
+
+message TradeHistory {
+    required string id = 1;
+    required TradeHistoryRequest.Types trade_type = 2;
+    required int64 date = 3;
+    required string amount = 4;
+    required string fee = 5;
+    required string fixed_currency = 6;
+    required string tax_currency = 7;
+    required string variable_amount = 8;
+    required string variable_currency = 9;
+    optional string external = 10;
+    required string login = 11;
+    required string external_key = 12;
+}
+
+message TradeHistoryResponse {
+    // TRADE_HISTORY_RESPONSE
+    repeated TradeHistory data = 1;
+    required int64 total = 2;
+}
+
+message MarkerOrderResponse {
+    // MARKET_ORDER_RESPONSE
+    required int64  order_id = 1;
+
+    // quantity not traded yet.
+    // when your order has been fully traded when you put it, this field will be zero
+    // when your order has not been traded at all when you put it, this field will be original order's quantity
+    // when your order has been partially traded when you put it, this field will be the quantity left in orderbook
+    required string amount_left = 2;
 }
 
 message WsRequestMetaData {
@@ -440,6 +557,11 @@ message WsRequestMetaData {
         LAST_TRADES = 12;
         TRADES = 13;
         CLIENT_ORDERS = 14;
+        CLIENT_ORDER = 15;
+        COMMISSION = 16;
+        COMMISSION_COMMON_INFO = 17;
+        TRADE_HISTORY = 18;
+        MARKET_ORDER = 19;
     }
     required WsRequestMsgType request_type = 1;
     optional string token = 2;
@@ -469,6 +591,11 @@ message WsResponseMetaData {
         LAST_TRADES_RESPONSE = 18;
         TRADES_RESPONSE = 19;
         CLIENT_ORDERS_RESPONSE = 20;
+        CLIENT_ORDER_RESPONSE = 21;
+        COMMISSION_RESPONSE = 22;
+        COMMISSION_COMMON_INFO_RESPONSE = 23;
+        TRADE_HISTORY_RESPONSE = 24;
+        MARKET_ORDER_RESPONSE = 25;
     }
     required WsResponseMsgType response_type = 1;
     optional string token = 2;

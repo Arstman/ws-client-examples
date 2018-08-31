@@ -350,6 +350,126 @@ window.onload = function() {
             doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.ClientOrdersRequest", requestType)
         };
 
+        var clientOrder = function(token, secretKey, orderId, currencyPair, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.CLIENT_ORDER;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                orderId: orderId,
+                currencyPair: currencyPair
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.ClientOrderRequest", requestType)
+        };
+
+        var commission = function(token, secretKey, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.COMMISSION;
+
+            var msgPayload = {
+                expireControl: requestExpired
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.CommissionRequest", requestType)
+        };
+
+        var commissionCommonInfo = function(token, secretKey, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.COMMISSION_COMMON_INFO;
+
+            var msgPayload = {
+                expireControl: requestExpired
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.CommissionCommonInfoRequest", requestType)
+        };
+
+        var tradeHistory = function(token, secretKey, start, end, types, limit, offset, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.TRADE_HISTORY;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                start: start,
+                end: end,
+                types: types,
+                limit: limit,
+                offset: offset
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.TradeHistoryRequest", requestType)
+        };
+
+        var marketOrder = function(token, secretKey, currencyPair, amount, orderType, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.MARKET_ORDER;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                currencyPair: currencyPair,
+                amount: amount,
+                orderType: orderType
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.MarkerOrderRequest", requestType)
+        };
+
         socket.onclose = function (event) {
             if (event.wasClean) {
                 console.log('The connection is closed cleanly');
@@ -486,6 +606,26 @@ window.onload = function() {
                     MessageClass = root.lookupType("protobuf.ws.ClientOrdersResponse");
                     message = MessageClass.decode(wsResponseMessage.msg);
                     onClientOrders(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.CLIENT_ORDER_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.ClientOrderResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onClientOrder(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.COMMISSION_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.CommissionResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onCommission(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.COMMISSION_COMMON_INFO_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.CommissionCommonInfoResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onCommissionCommonInfo(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.TRADE_HISTORY_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.TradeHistoryResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onTradeHistory(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.MARKET_ORDER_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.MarkerOrderResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onMarketOrder(message)
                 }
             }
         };
@@ -539,14 +679,26 @@ window.onload = function() {
         function onLogin() {
             console.log("Successful login");
             //here you can make your trade decision
-            var putlimitOrtedType = root.lookupType("protobuf.ws.PutLimitOrderRequest").OrderType.BID;
-            putLimitOrder("Limit", MY_SECRET_KEY,"BTC/USD", putlimitOrtedType,"10","20",30000);
+            var orderType = root.lookupType("protobuf.ws.PutLimitOrderRequest").OrderType.BID;
+            putLimitOrder("Limit", MY_SECRET_KEY,"BTC/USD", orderType,"10","20",30000);
             balance("balance", MY_SECRET_KEY,"BTC/USD", 300000);
             balances("balances", MY_SECRET_KEY,null,null, 30000);
             var interval = root.lookupType("protobuf.ws.LastTradesRequest").Interval.HOUR;
             lastTrades("lastTrades", MY_SECRET_KEY,"BTC/USD", null, interval, 300000);
-            trades("trades", MY_SECRET_KEY, null, null, null, null, 30000)
-            clientOrders("clientOrders", MY_SECRET_KEY, "BTC/USD", null, null, null, null, null, null, 30000)
+            trades("trades", MY_SECRET_KEY, null, null, null, null, 30000);
+            clientOrders("clientOrders", MY_SECRET_KEY, "BTC/USD", null, null, null, null, null, null, 30000);
+            clientOrder("clientOrder", MY_SECRET_KEY, 569300001, "BTC/USD", 30000)
+            commission("commission", MY_SECRET_KEY, 30000);
+            commissionCommonInfo("commissionCommonInfo", MY_SECRET_KEY, 30000);
+            var date = new Date();
+            var end = date.getTime();
+            date.setDate(date.getDate() - 30);
+            var start = date.getTime();
+            var sellTradeType = root.lookupType("protobuf.ws.TradeHistoryRequest").Types.SELL;
+            var buyTradeType = root.lookupType("protobuf.ws.TradeHistoryRequest").Types.BUY;
+            // tradeHistory("tradeHistory", MY_SECRET_KEY, start, end, [sellTradeType,buyTradeType], 100, 0, 30000);
+            var marketType = root.lookupType("protobuf.ws.ClientOrdersRequest").OrderType.BID;
+            marketOrder("marketOrder",MY_SECRET_KEY, "BTC/USD", "1", marketType, 30000)
         }
 
         function onPutLimitOrder(msg) {
@@ -583,6 +735,31 @@ window.onload = function() {
         function onClientOrders(msg) {
             //here you can make your trade decision
             console.log("clientOrders: " + JSON.stringify(msg))
+        }
+
+        function onClientOrder(msg) {
+            //here you can make your trade decision
+            console.log("clientOrder: " + JSON.stringify(msg))
+        }
+
+        function onCommission(msg) {
+            //here you can make your trade decision
+            console.log("commission: " + JSON.stringify(msg))
+        }
+
+        function onCommissionCommonInfo(msg) {
+            //here you can make your trade decision
+            console.log("commission: " + JSON.stringify(msg))
+        }
+
+        function onTradeHistory(msg) {
+            //here you can make your trade decision
+            console.log("TradeHistory: " + JSON.stringify(msg))
+        }
+
+        function onMarketOrder(msg) {
+            //here you can make your trade decision
+            console.log("MarketOrder: " + JSON.stringify(msg))
         }
 
         function connect(path) {
@@ -645,7 +822,6 @@ window.onload = function() {
                 data.push(string.charCodeAt(i));
             }
             return data;
-
         }
     });
 };
