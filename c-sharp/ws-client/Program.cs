@@ -58,6 +58,7 @@ namespace ws_client
         {
             Console.WriteLine("Status: Connected");
             WsClient_Subscribe(new TickerParams("BTC/USD",1.1f));
+            WsClient_Subscribe(new TradeParams("BTC/USD"));
             WsClient_Login(MY_API_KEY, MY_SECRET_KEY, 30000);
             //here you can make your trade decision
         }
@@ -98,9 +99,9 @@ namespace ws_client
             //here you can make your trade decision
         }
 
-        private void WsClient_OnError(int code, String message)
+        private void WsClient_OnError(string token, int code, String message)
         {
-            Console.WriteLine("Error code: \"" + code + "\", message:\"" + message + "\"");
+            Console.WriteLine("Token:\""+ token +"\", Error code: \"" + code + "\", message:\"" + message + "\"");
             //here you can make your trade decision
         }
 
@@ -125,14 +126,19 @@ namespace ws_client
 
 
         private void WsClient_Subscribe(Params param)
-        {
+        {   // creating request
+            protobuf.ws.WsRequestMetaData meta;
+            protobuf.ws.WsRequestMetaData.WsRequestMsgType requestType;
+            string token;
             byte[] msg;
-            if(param is TickerParams)
+
+            if (param is TickerParams)
             {
                 TickerParams tickerParams = ((TickerParams)param);
                 var message = new protobuf.ws.SubscribeTickerChannelRequest
                 {
                     CurrencyPair = tickerParams.symbol
+                   
                 };
                 if(tickerParams.frequency != null)
                 {
@@ -143,14 +149,34 @@ namespace ws_client
                 {
                     ProtoBuf.Serializer.Serialize(msgStream, message);
                     msg = msgStream.ToArray();
+                    requestType = protobuf.ws.WsRequestMetaData.WsRequestMsgType.SubscribeTicker;
+                    token = "Ticker_" + tickerParams.symbol + " channel";
                 }
-            } else
+            } else if (param is TradeParams)
+            {
+                TradeParams tradeParams = ((TradeParams)param);
+                var message = new protobuf.ws.SubscribeTradeChannelRequest
+                {
+                    CurrencyPair = tradeParams.symbol
+                };
+
+                using (MemoryStream msgStream = new MemoryStream())
+                {
+                    ProtoBuf.Serializer.Serialize(msgStream, message);
+                    msg = msgStream.ToArray();
+                    requestType = protobuf.ws.WsRequestMetaData.WsRequestMsgType.SubscribeTrade;
+                    token = "Trade_" + tradeParams.symbol + " channel";
+                }
+            } //here you can make your trade decision
+            else
             {
                 throw new NotImplementedException();
             }
-            var meta = new protobuf.ws.WsRequestMetaData
+            
+            meta = new protobuf.ws.WsRequestMetaData
             {
-                RequestType = protobuf.ws.WsRequestMetaData.WsRequestMsgType.SubscribeTicker
+                RequestType = requestType,
+                Token = token
             };
 
             protobuf.ws.WsRequest request = new protobuf.ws.WsRequest
@@ -214,6 +240,7 @@ namespace ws_client
             var meta = new protobuf.ws.WsRequestMetaData
             {
                 RequestType = protobuf.ws.WsRequestMetaData.WsRequestMsgType.Login,
+                Token = "Login request",
                 Sign = sign
             };
 
@@ -225,6 +252,8 @@ namespace ws_client
 
             sendRequest(request);
         }
+
+        //here you can make your trade decision
 
         private void sendRequest(protobuf.ws.WsRequest request)
         {
@@ -239,8 +268,12 @@ namespace ws_client
         {
             if (ws != null)
             {
+                // unsubscribing from channels
+                // here you can make your trade decision
+
                 WsClient_Unsubscribe(protobuf.ws.UnsubscribeRequest.ChannelType.Ticker, "BTC/USD");
-                //here you can make your trade decision
+                WsClient_Unsubscribe(protobuf.ws.UnsubscribeRequest.ChannelType.Trade, "BTC/USD");
+
                 Thread.Sleep(2000);
                 ws.Close();
             }
@@ -248,6 +281,7 @@ namespace ws_client
 
         private void processMessage(byte[] receivedData)
         {
+            // parsing response
             using (MemoryStream responseStream = new MemoryStream(receivedData))
             {
                 protobuf.ws.WsResponse response = ProtoBuf.Serializer.Deserialize<protobuf.ws.WsResponse>(responseStream);
@@ -260,7 +294,7 @@ namespace ws_client
                         WsClient_OnSubscribe(channelId);
                         message.Datas.ForEach(delegate (protobuf.ws.TickerEvent evt) {
                             TickerEvent preparedEvent = prepareTickerEvent(evt);
-                            preparedEvent.ChannelId = "Ticker_" + message.CurrencyPair;
+                            preparedEvent.ChannelId = channelId;
                             WsClient_OnTicker(preparedEvent);
                         });
                     }
@@ -272,8 +306,33 @@ namespace ws_client
                         string channelId = "Ticker_" + message.CurrencyPair;
                         message.Datas.ForEach(delegate (protobuf.ws.TickerEvent evt) {
                             TickerEvent preparedEvent = prepareTickerEvent(evt);
-                            preparedEvent.ChannelId = "Ticker_" + message.CurrencyPair;
+                            preparedEvent.ChannelId = channelId;
                             WsClient_OnTicker(preparedEvent);
+                        });
+                    }
+                } if (response.Meta.ResponseType == protobuf.ws.WsResponseMetaData.WsResponseMsgType.TradeChannelSubscribed)
+                {
+                    using (MemoryStream messageStream = new MemoryStream(response.Msg))
+                    {
+                        protobuf.ws.TradeChannelSubscribedResponse message = ProtoBuf.Serializer.Deserialize<protobuf.ws.TradeChannelSubscribedResponse>(messageStream);
+                        string channelId = "Trade_" + message.CurrencyPair;
+                        WsClient_OnSubscribe(channelId);
+                        message.Datas.ForEach(delegate (protobuf.ws.TradeEvent evt) {
+                            TradeEvent preparedEvent = prepareTradeEvent(evt);
+                            preparedEvent.ChannelId = channelId;
+                            WsClient_OnTrade(preparedEvent);
+                        });
+                    }
+                } else if (response.Meta.ResponseType == protobuf.ws.WsResponseMetaData.WsResponseMsgType.TradeNotify)
+                {
+                    using (MemoryStream messageStream = new MemoryStream(response.Msg))
+                    {
+                        protobuf.ws.TradeNotification message = ProtoBuf.Serializer.Deserialize<protobuf.ws.TradeNotification>(messageStream);
+                        string channelId = "Trade_" + message.CurrencyPair;
+                        message.Datas.ForEach(delegate (protobuf.ws.TradeEvent evt) {
+                            TradeEvent preparedEvent = prepareTradeEvent(evt);
+                            preparedEvent.ChannelId = channelId;
+                            WsClient_OnTrade(preparedEvent);
                         });
                     }
                 } else if (response.Meta.ResponseType == protobuf.ws.WsResponseMetaData.WsResponseMsgType.Error)
@@ -281,7 +340,7 @@ namespace ws_client
                     using (MemoryStream messageStream = new MemoryStream(response.Msg))
                     {
                         protobuf.ws.ErrorResponse message = ProtoBuf.Serializer.Deserialize<protobuf.ws.ErrorResponse>(messageStream);
-                        WsClient_OnError(message.Code, message.Message);
+                        WsClient_OnError(response.Meta.Token, message.Code, message.Message);
                     }
                 } else if(response.Meta.ResponseType == protobuf.ws.WsResponseMetaData.WsResponseMsgType.ChannelUnsubscribed)
                 {
@@ -290,14 +349,22 @@ namespace ws_client
                         if (message.Type == protobuf.ws.UnsubscribeRequest.ChannelType.Ticker)
                         {
                             WsClient_OnUnsubscribe("Ticker_" + message.CurrencyPair);
+                        } else if (message.Type == protobuf.ws.UnsubscribeRequest.ChannelType.Trade)
+                        {
+                            WsClient_OnUnsubscribe("Trade_" + message.CurrencyPair);
                         }
                     }
                 } else if (response.Meta.ResponseType == protobuf.ws.WsResponseMetaData.WsResponseMsgType.LoginResponse)
                 {
                     WsClient_OnLogin();
                 }
+
+                // here you can make your trade decision
+
             }
         }
+
+        // parsing events
 
         private TickerEvent prepareTickerEvent(protobuf.ws.TickerEvent evt)
         {
@@ -312,7 +379,19 @@ namespace ws_client
             ticker.BestBid = parseDecimal(evt.BestBid);
             ticker.BestAsk = parseDecimal(evt.BestAsk);
             return ticker;
-        } 
+        }
+
+        private TradeEvent prepareTradeEvent(protobuf.ws.TradeEvent evt)
+        {
+            TradeEvent trade = new TradeEvent();
+            trade.Id = evt.Id;
+            trade.Price = parseDecimal(evt.Price);
+            trade.Quantity = parseDecimal(evt.Quantity);
+            trade.Timestamp = evt.Timestamp;
+            return trade;
+        }
+
+        //here you can make your trade decision
 
         private decimal parseDecimal(string number)
         {
