@@ -470,6 +470,133 @@ window.onload = function() {
             doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.MarkerOrderRequest", requestType)
         };
 
+        var walletAddress = function(token, secretKey, currency, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WALLET_ADDRESS;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                currency: currency
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WalletAddressRequest", requestType)
+        };
+
+        var withdrawalCoin = function(token, secretKey, wallet, currency, amount, description, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_COIN;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                wallet: wallet,
+                currency: currency,
+                amount: amount,
+                description: description
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalCoinRequest", requestType)
+        };
+
+        var withdrawalPayeer = function(token, secretKey, wallet, currency, amount, protect, protectPeriod, protectCode, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_PAYEER;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                wallet: wallet,
+                currency: currency,
+                amount: amount,
+                protect: protect,
+                protectPeriod: protectPeriod,
+                protectCode: protectCode
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalPayeerRequest", requestType)
+        };
+
+        var withdrawalCapitalist = function(token, secretKey, wallet, currency, amount, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_CAPITALIST;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                wallet: wallet,
+                currency: currency,
+                amount: amount
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalCapitalistRequest", requestType)
+        };
+
+        var withdrawalAdvcash = function(token, secretKey, wallet, currency, amount, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_ADVCASH;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                wallet: wallet,
+                currency: currency,
+                amount: amount
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalAdvcashRequest", requestType)
+        };
+
         socket.onclose = function (event) {
             if (event.wasClean) {
                 console.log('The connection is closed cleanly');
@@ -626,6 +753,26 @@ window.onload = function() {
                     MessageClass = root.lookupType("protobuf.ws.MarkerOrderResponse");
                     message = MessageClass.decode(wsResponseMessage.msg);
                     onMarketOrder(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WALLET_ADDRESS_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WalletAddressResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWalletAddress(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WITHDRAWAL_COIN_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WithdrawalCoinResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWithdrawalCoin(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WITHDRAWAL_PAYEER_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WithdrawalPayeerResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWithdrawalPayeer(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WITHDRAWAL_CAPITALIST_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WithdrawalCapitalistResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWithdrawalCapitalist(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WITHDRAWAL_ADVCASH_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WithdrawalCapitalistResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWithdrawalAdvcash(message)
                 }
             }
         };
@@ -696,9 +843,17 @@ window.onload = function() {
             var start = date.getTime();
             var sellTradeType = root.lookupType("protobuf.ws.TradeHistoryRequest").Types.SELL;
             var buyTradeType = root.lookupType("protobuf.ws.TradeHistoryRequest").Types.BUY;
-            // tradeHistory("tradeHistory", MY_SECRET_KEY, start, end, [sellTradeType,buyTradeType], 100, 0, 30000);
+            tradeHistory("tradeHistory", MY_SECRET_KEY, start, end, [sellTradeType,buyTradeType], 100, 0, 30000);
             var marketType = root.lookupType("protobuf.ws.ClientOrdersRequest").OrderType.BID;
-            marketOrder("marketOrder",MY_SECRET_KEY, "BTC/USD", "1", marketType, 30000)
+            marketOrder("marketOrder",MY_SECRET_KEY, "BTC/USD", "1", marketType, 30000);
+            walletAddress("Wallet", MY_SECRET_KEY, "BTC", 30000);
+
+            //withdrawal
+
+            // withdrawalCoin("out/coin", MY_SECRET_KEY, "34Adcp7UbL2sdBqaDc9s7SCisX7C5EALw3", "BTC", "0.002", null, 30000);
+            // withdrawalPayeer("out/payeer", MY_SECRET_KEY, "P12345678", "USD", "0.01", null, null, null, 30000);
+            // withdrawalCapitalist("out/capitalist", MY_SECRET_KEY, "U0000001", "USD", "0.01", 30000);
+            // withdrawalAdvcash("out/advcash", MY_SECRET_KEY, "U123456789012", "USD", "0.01", 30000);
         }
 
         function onPutLimitOrder(msg) {
@@ -760,6 +915,31 @@ window.onload = function() {
         function onMarketOrder(msg) {
             //here you can make your trade decision
             console.log("MarketOrder: " + JSON.stringify(msg))
+        }
+
+        function onWalletAddress(msg) {
+            //here you can make your trade decision
+            console.log("WalletAddress: " + JSON.stringify(msg))
+        }
+
+        function onWithdrawalCoin(msg) {
+            //here you can make your trade decision
+            console.log("WithdrawalCoin: " + JSON.stringify(msg))
+        }
+
+        function onWithdrawalPayeer(msg) {
+            //here you can make your trade decision
+            console.log("WithdrawalPayeer: " + JSON.stringify(msg))
+        }
+
+        function onWithdrawalCapitalist(msg) {
+            //here you can make your trade decision
+            console.log("WithdrawalCapitalist: " + JSON.stringify(msg))
+        }
+
+        function onWithdrawalAdvcash(msg) {
+            //here you can make your trade decision
+            console.log("WithdrawalAdvcash: " + JSON.stringify(msg))
         }
 
         function connect(path) {

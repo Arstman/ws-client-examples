@@ -226,6 +226,49 @@ message MarkerOrderRequest {
     required ClientOrdersRequest.OrderType orderType = 4;
 }
 
+message WalletAddressRequest {
+    //WALLET_ADDRESS
+    required RequestExpired expire_control = 1;
+    required string currency = 2;
+}
+
+message WithdrawalCoinRequest {
+    //WITHDRAWAL_COIN
+    required RequestExpired expire_control = 1;
+    required string wallet = 2;
+    required string currency = 3;
+    required string amount = 4;
+    optional string description = 5;
+}
+
+message WithdrawalPayeerRequest {
+    //WITHDRAWAL_PAYEER
+    required RequestExpired expire_control = 1;
+    required string wallet = 2;
+    required string currency = 3;
+    required string amount = 4;
+    optional string protect = 5;
+    optional int32 protectPeriod = 6;
+    optional string protectCode = 7;
+}
+
+message WithdrawalCapitalistRequest {
+    //WITHDRAWAL_CAPITALIST
+    required RequestExpired expire_control = 1;
+    required string wallet = 2;
+    required string currency = 3;
+    required string amount = 4;
+}
+
+
+message WithdrawalAdvcashRequest {
+    //WITHDRAWAL_CAPITALIST
+    required RequestExpired expire_control = 1;
+    required string wallet = 2;
+    required string currency = 3;
+    required string amount = 4;
+}
+
 message TickerEvent {
     required int64  timestamp = 1;
     optional string last = 2;
@@ -300,6 +343,8 @@ message TradeEvent {
     required int64 timestamp = 3;
     required string price = 4;
     required string quantity = 5;
+    optional int64 order_buy_id = 6;
+    optional int64 order_sell_id = 7;
 }
 
 message TradeChannelSubscribedResponse {
@@ -541,6 +586,132 @@ message MarkerOrderResponse {
     required string amount_left = 2;
 }
 
+message WalletAddressResponse {
+    required string wallet_address = 1;
+    required string wallet_currency = 2;
+}
+
+message WithdrawalCoinResponse {
+    enum State{
+        NEW = 1;
+        SAVED = 2;
+        RECEIVED = 3;
+        VERIFIED = 4;
+        INPROCESS = 5;
+        PREAPPROVED = 6;
+        APPROVED = 7;
+        READY_FOR_EXECUTION = 8;
+        ONEXECUTION = 9;
+        EXECUTED = 10;
+        DECLINED = 11;
+        POSTPONED = 12;
+    }
+    optional string fault = 1;
+    required int64 user_id = 2;
+    required string user_name = 3;
+    required int64 id = 4;
+    required State state = 5;
+    required int64 create_date = 6;
+    required int64 last_modify_date = 7;
+    optional string verification_type = 8;
+    optional int64 verification_data = 9;
+    optional string comment = 10;
+    required string description = 11;
+    required string amount = 12;
+    required string currency = 13;
+    required string wallet = 14;
+}
+
+message WithdrawalPayeerResponse {
+    optional string fault = 1;
+    required int64 user_id = 2;
+    required string user_name = 3;
+    required int64 id = 4;
+    required WithdrawalCoinResponse.State state = 5;
+    required int64 create_date = 6;
+    required int64 last_modify_date = 7;
+    optional string verification_type = 8;
+    optional string verification_data = 9;
+    optional string comment = 10;
+    required string description = 11;
+    required string amount = 12;
+    required string currency = 13;
+    required string account_to = 14;
+    optional int64 acceptDate = 15;
+    optional int64 valueDate = 16;
+    required int64 docDate = 17;
+    required string docNumber = 18;
+    optional string correspondentDetails = 19;
+    required string accountFrom = 20;
+    required bool outcome = 21;
+    optional string external = 22;
+    required string externalKey = 23;
+    required int64 externalSystemId = 24;
+    optional int64 externalServiceId = 25;
+    required string to = 26;
+    optional string protect = 27;
+    optional int32 protectPeriod = 28;
+    optional string protectCode = 29;
+}
+
+message WithdrawalCapitalistResponse {
+    optional string fault = 1;
+    required int64 user_id = 2;
+    required string user_name = 3;
+    required int64 id = 4;
+    required WithdrawalCoinResponse.State state = 5;
+    required int64 create_date = 6;
+    required int64 last_modify_date = 7;
+    optional string verification_type = 8;
+    optional string verification_data = 9;
+    optional string comment = 10;
+    required string description = 11;
+    required string amount = 12;
+    required string currency = 13;
+    required string account_to = 14;
+    optional int64 acceptDate = 15;
+    optional int64 valueDate = 16;
+    required int64 docDate = 17;
+    required string docNumber = 18;
+    optional string correspondentDetails = 19;
+    required string accountFrom = 20;
+    required bool outcome = 21;
+    optional string external = 22;
+    required string externalKey = 23;
+    required int64 externalSystemId = 24;
+    optional int64 externalServiceId = 25;
+    required string toAccount = 26;
+}
+
+message WithdrawalAdvcashResponse {
+    optional string fault = 1;
+    required int64 user_id = 2;
+    required string user_name = 3;
+    required int64 id = 4;
+    required WithdrawalCoinResponse.State state = 5;
+    required int64 create_date = 6;
+    required int64 last_modify_date = 7;
+    optional string verification_type = 8;
+    optional string verification_data = 9;
+    optional string comment = 10;
+    required string description = 11;
+    required string amount = 12;
+    required string currency = 13;
+    required string account_to = 14;
+    optional int64 acceptDate = 15;
+    optional int64 valueDate = 16;
+    required int64 docDate = 17;
+    required string docNumber = 18;
+    optional string correspondentDetails = 19;
+    required string accountFrom = 20;
+    required bool outcome = 21;
+    optional string external = 22;
+    required string externalKey = 23;
+    required int64 externalSystemId = 24;
+    optional int64 externalServiceId = 25;
+    required string toAccount = 26;
+}
+
 message WsRequestMetaData {
     enum WsRequestMsgType {
         SUBSCRIBE_TICKER = 1;
@@ -562,6 +733,11 @@ message WsRequestMetaData {
         COMMISSION_COMMON_INFO = 17;
         TRADE_HISTORY = 18;
         MARKET_ORDER = 19;
+        WALLET_ADDRESS = 20;
+        WITHDRAWAL_COIN = 21;
+        WITHDRAWAL_PAYEER = 22;
+        WITHDRAWAL_CAPITALIST = 23;
+        WITHDRAWAL_ADVCASH = 24;
     }
     required WsRequestMsgType request_type = 1;
     optional string token = 2;
@@ -596,6 +772,11 @@ message WsResponseMetaData {
         COMMISSION_COMMON_INFO_RESPONSE = 23;
         TRADE_HISTORY_RESPONSE = 24;
         MARKET_ORDER_RESPONSE = 25;
+        WALLET_ADDRESS_RESPONSE = 26;
+        WITHDRAWAL_COIN_RESPONSE = 27;
+        WITHDRAWAL_PAYEER_RESPONSE = 28;
+        WITHDRAWAL_CAPITALIST_RESPONSE = 29;
+        WITHDRAWAL_ADVCASH_RESPONSE = 30;
     }
     required WsResponseMsgType response_type = 1;
     optional string token = 2;
