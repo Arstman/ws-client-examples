@@ -1,6 +1,10 @@
 # Livecoin websocket API
 
-Current BETA2 version of Livecoin websocket API supports five types of channels: ticker, orderbook (grouped by price), orderbook raw, trades and candles and methods for placing limit orders and cancelling them.
+Current version of Livecoin websocket API supports five types of public channels: ticker, orderbook (grouped by price), orderbook raw, trades, candles.
+
+There are also two private channels with only (and all) customer's events: "private orders raw" for changes in customer's orders (and, optionally, all open customer's orders as initial state); "private trades" for all customer's trades.
+
+There are methods for placing limit orders and canceling them, and methods for cryptocurrency/fiat withdrawal.
 
 You can see description of previous version at https://github.com/lvcn1/ws-client-examples/tree/beta_v1 .
 

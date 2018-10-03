@@ -642,6 +642,148 @@ namespace protobuf.ws
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public partial class WalletAddressRequest : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"expire_control", IsRequired = true)]
+        public RequestExpired ExpireControl { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"currency", IsRequired = true)]
+        public string Currency { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class WithdrawalCoinRequest : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"expire_control", IsRequired = true)]
+        public RequestExpired ExpireControl { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"wallet", IsRequired = true)]
+        public string Wallet { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"currency", IsRequired = true)]
+        public string Currency { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4, Name = @"amount", IsRequired = true)]
+        public string Amount { get; set; }
+
+        [global::ProtoBuf.ProtoMember(5, Name = @"description")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Description
+        {
+            get { return __pbn__Description ?? ""; }
+            set { __pbn__Description = value; }
+        }
+        public bool ShouldSerializeDescription() => __pbn__Description != null;
+        public void ResetDescription() => __pbn__Description = null;
+        private string __pbn__Description;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class WithdrawalPayeerRequest : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"expire_control", IsRequired = true)]
+        public RequestExpired ExpireControl { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"wallet", IsRequired = true)]
+        public string Wallet { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"currency", IsRequired = true)]
+        public string Currency { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4, Name = @"amount", IsRequired = true)]
+        public string Amount { get; set; }
+
+        [global::ProtoBuf.ProtoMember(5, Name = @"protect")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Protect
+        {
+            get { return __pbn__Protect ?? ""; }
+            set { __pbn__Protect = value; }
+        }
+        public bool ShouldSerializeProtect() => __pbn__Protect != null;
+        public void ResetProtect() => __pbn__Protect = null;
+        private string __pbn__Protect;
+
+        [global::ProtoBuf.ProtoMember(6)]
+        public int protectPeriod
+        {
+            get { return __pbn__protectPeriod.GetValueOrDefault(); }
+            set { __pbn__protectPeriod = value; }
+        }
+        public bool ShouldSerializeprotectPeriod() => __pbn__protectPeriod != null;
+        public void ResetprotectPeriod() => __pbn__protectPeriod = null;
+        private int? __pbn__protectPeriod;
+
+        [global::ProtoBuf.ProtoMember(7)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string protectCode
+        {
+            get { return __pbn__protectCode ?? ""; }
+            set { __pbn__protectCode = value; }
+        }
+        public bool ShouldSerializeprotectCode() => __pbn__protectCode != null;
+        public void ResetprotectCode() => __pbn__protectCode = null;
+        private string __pbn__protectCode;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class WithdrawalCapitalistRequest : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"expire_control", IsRequired = true)]
+        public RequestExpired ExpireControl { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"wallet", IsRequired = true)]
+        public string Wallet { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"currency", IsRequired = true)]
+        public string Currency { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4, Name = @"amount", IsRequired = true)]
+        public string Amount { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class WithdrawalAdvcashRequest : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"expire_control", IsRequired = true)]
+        public RequestExpired ExpireControl { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"wallet", IsRequired = true)]
+        public string Wallet { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"currency", IsRequired = true)]
+        public string Currency { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4, Name = @"amount", IsRequired = true)]
+        public string Amount { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public partial class TickerEvent : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
@@ -889,6 +1031,26 @@ namespace protobuf.ws
 
         [global::ProtoBuf.ProtoMember(5, Name = @"quantity", IsRequired = true)]
         public string Quantity { get; set; }
+
+        [global::ProtoBuf.ProtoMember(6, Name = @"order_buy_id")]
+        public long OrderBuyId
+        {
+            get { return __pbn__OrderBuyId.GetValueOrDefault(); }
+            set { __pbn__OrderBuyId = value; }
+        }
+        public bool ShouldSerializeOrderBuyId() => __pbn__OrderBuyId != null;
+        public void ResetOrderBuyId() => __pbn__OrderBuyId = null;
+        private long? __pbn__OrderBuyId;
+
+        [global::ProtoBuf.ProtoMember(7, Name = @"order_sell_id")]
+        public long OrderSellId
+        {
+            get { return __pbn__OrderSellId.GetValueOrDefault(); }
+            set { __pbn__OrderSellId = value; }
+        }
+        public bool ShouldSerializeOrderSellId() => __pbn__OrderSellId != null;
+        public void ResetOrderSellId() => __pbn__OrderSellId = null;
+        private long? __pbn__OrderSellId;
 
         [global::ProtoBuf.ProtoContract()]
         public enum TradeType
@@ -1508,6 +1670,852 @@ namespace protobuf.ws
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public partial class WalletAddressResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"wallet_address", IsRequired = true)]
+        public string WalletAddress { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"wallet_currency", IsRequired = true)]
+        public string WalletCurrency { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class WithdrawalCoinResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"fault")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Fault
+        {
+            get { return __pbn__Fault ?? ""; }
+            set { __pbn__Fault = value; }
+        }
+        public bool ShouldSerializeFault() => __pbn__Fault != null;
+        public void ResetFault() => __pbn__Fault = null;
+        private string __pbn__Fault;
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"user_id", IsRequired = true)]
+        public long UserId { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"user_name", IsRequired = true)]
+        public string UserName { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4, Name = @"id", IsRequired = true)]
+        public long Id { get; set; }
+
+        [global::ProtoBuf.ProtoMember(5, IsRequired = true)]
+        public State state { get; set; } = State.New;
+
+        [global::ProtoBuf.ProtoMember(6, Name = @"create_date", IsRequired = true)]
+        public long CreateDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(7, Name = @"last_modify_date", IsRequired = true)]
+        public long LastModifyDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(8, Name = @"verification_type")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string VerificationType
+        {
+            get { return __pbn__VerificationType ?? ""; }
+            set { __pbn__VerificationType = value; }
+        }
+        public bool ShouldSerializeVerificationType() => __pbn__VerificationType != null;
+        public void ResetVerificationType() => __pbn__VerificationType = null;
+        private string __pbn__VerificationType;
+
+        [global::ProtoBuf.ProtoMember(9, Name = @"verification_data")]
+        public long VerificationData
+        {
+            get { return __pbn__VerificationData.GetValueOrDefault(); }
+            set { __pbn__VerificationData = value; }
+        }
+        public bool ShouldSerializeVerificationData() => __pbn__VerificationData != null;
+        public void ResetVerificationData() => __pbn__VerificationData = null;
+        private long? __pbn__VerificationData;
+
+        [global::ProtoBuf.ProtoMember(10, Name = @"comment")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Comment
+        {
+            get { return __pbn__Comment ?? ""; }
+            set { __pbn__Comment = value; }
+        }
+        public bool ShouldSerializeComment() => __pbn__Comment != null;
+        public void ResetComment() => __pbn__Comment = null;
+        private string __pbn__Comment;
+
+        [global::ProtoBuf.ProtoMember(11, Name = @"description", IsRequired = true)]
+        public string Description { get; set; }
+
+        [global::ProtoBuf.ProtoMember(12, Name = @"amount", IsRequired = true)]
+        public string Amount { get; set; }
+
+        [global::ProtoBuf.ProtoMember(13, Name = @"currency", IsRequired = true)]
+        public string Currency { get; set; }
+
+        [global::ProtoBuf.ProtoMember(14, Name = @"wallet", IsRequired = true)]
+        public string Wallet { get; set; }
+
+        [global::ProtoBuf.ProtoContract()]
+        public enum State
+        {
+            [global::ProtoBuf.ProtoEnum(Name = @"NEW")]
+            New = 1,
+            [global::ProtoBuf.ProtoEnum(Name = @"SAVED")]
+            Saved = 2,
+            [global::ProtoBuf.ProtoEnum(Name = @"RECEIVED")]
+            Received = 3,
+            [global::ProtoBuf.ProtoEnum(Name = @"VERIFIED")]
+            Verified = 4,
+            [global::ProtoBuf.ProtoEnum(Name = @"INPROCESS")]
+            Inprocess = 5,
+            [global::ProtoBuf.ProtoEnum(Name = @"PREAPPROVED")]
+            Preapproved = 6,
+            [global::ProtoBuf.ProtoEnum(Name = @"APPROVED")]
+            Approved = 7,
+            [global::ProtoBuf.ProtoEnum(Name = @"READY_FOR_EXECUTION")]
+            ReadyForExecution = 8,
+            [global::ProtoBuf.ProtoEnum(Name = @"ONEXECUTION")]
+            Onexecution = 9,
+            [global::ProtoBuf.ProtoEnum(Name = @"EXECUTED")]
+            Executed = 10,
+            [global::ProtoBuf.ProtoEnum(Name = @"DECLINED")]
+            Declined = 11,
+            [global::ProtoBuf.ProtoEnum(Name = @"POSTPONED")]
+            Postponed = 12,
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class WithdrawalPayeerResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"fault")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Fault
+        {
+            get { return __pbn__Fault ?? ""; }
+            set { __pbn__Fault = value; }
+        }
+        public bool ShouldSerializeFault() => __pbn__Fault != null;
+        public void ResetFault() => __pbn__Fault = null;
+        private string __pbn__Fault;
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"user_id", IsRequired = true)]
+        public long UserId { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"user_name", IsRequired = true)]
+        public string UserName { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4, Name = @"id", IsRequired = true)]
+        public long Id { get; set; }
+
+        [global::ProtoBuf.ProtoMember(5, Name = @"state", IsRequired = true)]
+        public WithdrawalCoinResponse.State State { get; set; } = WithdrawalCoinResponse.State.New;
+
+        [global::ProtoBuf.ProtoMember(6, Name = @"create_date", IsRequired = true)]
+        public long CreateDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(7, Name = @"last_modify_date", IsRequired = true)]
+        public long LastModifyDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(8, Name = @"verification_type")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string VerificationType
+        {
+            get { return __pbn__VerificationType ?? ""; }
+            set { __pbn__VerificationType = value; }
+        }
+        public bool ShouldSerializeVerificationType() => __pbn__VerificationType != null;
+        public void ResetVerificationType() => __pbn__VerificationType = null;
+        private string __pbn__VerificationType;
+
+        [global::ProtoBuf.ProtoMember(9, Name = @"verification_data")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string VerificationData
+        {
+            get { return __pbn__VerificationData ?? ""; }
+            set { __pbn__VerificationData = value; }
+        }
+        public bool ShouldSerializeVerificationData() => __pbn__VerificationData != null;
+        public void ResetVerificationData() => __pbn__VerificationData = null;
+        private string __pbn__VerificationData;
+
+        [global::ProtoBuf.ProtoMember(10, Name = @"comment")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Comment
+        {
+            get { return __pbn__Comment ?? ""; }
+            set { __pbn__Comment = value; }
+        }
+        public bool ShouldSerializeComment() => __pbn__Comment != null;
+        public void ResetComment() => __pbn__Comment = null;
+        private string __pbn__Comment;
+
+        [global::ProtoBuf.ProtoMember(11, Name = @"description", IsRequired = true)]
+        public string Description { get; set; }
+
+        [global::ProtoBuf.ProtoMember(12, Name = @"amount", IsRequired = true)]
+        public string Amount { get; set; }
+
+        [global::ProtoBuf.ProtoMember(13, Name = @"currency", IsRequired = true)]
+        public string Currency { get; set; }
+
+        [global::ProtoBuf.ProtoMember(14, Name = @"account_to", IsRequired = true)]
+        public string AccountTo { get; set; }
+
+        [global::ProtoBuf.ProtoMember(15)]
+        public long acceptDate
+        {
+            get { return __pbn__acceptDate.GetValueOrDefault(); }
+            set { __pbn__acceptDate = value; }
+        }
+        public bool ShouldSerializeacceptDate() => __pbn__acceptDate != null;
+        public void ResetacceptDate() => __pbn__acceptDate = null;
+        private long? __pbn__acceptDate;
+
+        [global::ProtoBuf.ProtoMember(16)]
+        public long valueDate
+        {
+            get { return __pbn__valueDate.GetValueOrDefault(); }
+            set { __pbn__valueDate = value; }
+        }
+        public bool ShouldSerializevalueDate() => __pbn__valueDate != null;
+        public void ResetvalueDate() => __pbn__valueDate = null;
+        private long? __pbn__valueDate;
+
+        [global::ProtoBuf.ProtoMember(17, IsRequired = true)]
+        public long docDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(18, IsRequired = true)]
+        public string docNumber { get; set; }
+
+        [global::ProtoBuf.ProtoMember(19)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string correspondentDetails
+        {
+            get { return __pbn__correspondentDetails ?? ""; }
+            set { __pbn__correspondentDetails = value; }
+        }
+        public bool ShouldSerializecorrespondentDetails() => __pbn__correspondentDetails != null;
+        public void ResetcorrespondentDetails() => __pbn__correspondentDetails = null;
+        private string __pbn__correspondentDetails;
+
+        [global::ProtoBuf.ProtoMember(20, IsRequired = true)]
+        public string accountFrom { get; set; }
+
+        [global::ProtoBuf.ProtoMember(21, Name = @"outcome", IsRequired = true)]
+        public bool Outcome { get; set; }
+
+        [global::ProtoBuf.ProtoMember(22, Name = @"external")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string External
+        {
+            get { return __pbn__External ?? ""; }
+            set { __pbn__External = value; }
+        }
+        public bool ShouldSerializeExternal() => __pbn__External != null;
+        public void ResetExternal() => __pbn__External = null;
+        private string __pbn__External;
+
+        [global::ProtoBuf.ProtoMember(23, IsRequired = true)]
+        public string externalKey { get; set; }
+
+        [global::ProtoBuf.ProtoMember(24, IsRequired = true)]
+        public long externalSystemId { get; set; }
+
+        [global::ProtoBuf.ProtoMember(25)]
+        public long externalServiceId
+        {
+            get { return __pbn__externalServiceId.GetValueOrDefault(); }
+            set { __pbn__externalServiceId = value; }
+        }
+        public bool ShouldSerializeexternalServiceId() => __pbn__externalServiceId != null;
+        public void ResetexternalServiceId() => __pbn__externalServiceId = null;
+        private long? __pbn__externalServiceId;
+
+        [global::ProtoBuf.ProtoMember(26, Name = @"to", IsRequired = true)]
+        public string To { get; set; }
+
+        [global::ProtoBuf.ProtoMember(27, Name = @"protect")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Protect
+        {
+            get { return __pbn__Protect ?? ""; }
+            set { __pbn__Protect = value; }
+        }
+        public bool ShouldSerializeProtect() => __pbn__Protect != null;
+        public void ResetProtect() => __pbn__Protect = null;
+        private string __pbn__Protect;
+
+        [global::ProtoBuf.ProtoMember(28)]
+        public int protectPeriod
+        {
+            get { return __pbn__protectPeriod.GetValueOrDefault(); }
+            set { __pbn__protectPeriod = value; }
+        }
+        public bool ShouldSerializeprotectPeriod() => __pbn__protectPeriod != null;
+        public void ResetprotectPeriod() => __pbn__protectPeriod = null;
+        private int? __pbn__protectPeriod;
+
+        [global::ProtoBuf.ProtoMember(29)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string protectCode
+        {
+            get { return __pbn__protectCode ?? ""; }
+            set { __pbn__protectCode = value; }
+        }
+        public bool ShouldSerializeprotectCode() => __pbn__protectCode != null;
+        public void ResetprotectCode() => __pbn__protectCode = null;
+        private string __pbn__protectCode;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class WithdrawalCapitalistResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"fault")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Fault
+        {
+            get { return __pbn__Fault ?? ""; }
+            set { __pbn__Fault = value; }
+        }
+        public bool ShouldSerializeFault() => __pbn__Fault != null;
+        public void ResetFault() => __pbn__Fault = null;
+        private string __pbn__Fault;
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"user_id", IsRequired = true)]
+        public long UserId { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"user_name", IsRequired = true)]
+        public string UserName { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4, Name = @"id", IsRequired = true)]
+        public long Id { get; set; }
+
+        [global::ProtoBuf.ProtoMember(5, Name = @"state", IsRequired = true)]
+        public WithdrawalCoinResponse.State State { get; set; } = WithdrawalCoinResponse.State.New;
+
+        [global::ProtoBuf.ProtoMember(6, Name = @"create_date", IsRequired = true)]
+        public long CreateDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(7, Name = @"last_modify_date", IsRequired = true)]
+        public long LastModifyDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(8, Name = @"verification_type")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string VerificationType
+        {
+            get { return __pbn__VerificationType ?? ""; }
+            set { __pbn__VerificationType = value; }
+        }
+        public bool ShouldSerializeVerificationType() => __pbn__VerificationType != null;
+        public void ResetVerificationType() => __pbn__VerificationType = null;
+        private string __pbn__VerificationType;
+
+        [global::ProtoBuf.ProtoMember(9, Name = @"verification_data")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string VerificationData
+        {
+            get { return __pbn__VerificationData ?? ""; }
+            set { __pbn__VerificationData = value; }
+        }
+        public bool ShouldSerializeVerificationData() => __pbn__VerificationData != null;
+        public void ResetVerificationData() => __pbn__VerificationData = null;
+        private string __pbn__VerificationData;
+
+        [global::ProtoBuf.ProtoMember(10, Name = @"comment")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Comment
+        {
+            get { return __pbn__Comment ?? ""; }
+            set { __pbn__Comment = value; }
+        }
+        public bool ShouldSerializeComment() => __pbn__Comment != null;
+        public void ResetComment() => __pbn__Comment = null;
+        private string __pbn__Comment;
+
+        [global::ProtoBuf.ProtoMember(11, Name = @"description", IsRequired = true)]
+        public string Description { get; set; }
+
+        [global::ProtoBuf.ProtoMember(12, Name = @"amount", IsRequired = true)]
+        public string Amount { get; set; }
+
+        [global::ProtoBuf.ProtoMember(13, Name = @"currency", IsRequired = true)]
+        public string Currency { get; set; }
+
+        [global::ProtoBuf.ProtoMember(14, Name = @"account_to", IsRequired = true)]
+        public string AccountTo { get; set; }
+
+        [global::ProtoBuf.ProtoMember(15)]
+        public long acceptDate
+        {
+            get { return __pbn__acceptDate.GetValueOrDefault(); }
+            set { __pbn__acceptDate = value; }
+        }
+        public bool ShouldSerializeacceptDate() => __pbn__acceptDate != null;
+        public void ResetacceptDate() => __pbn__acceptDate = null;
+        private long? __pbn__acceptDate;
+
+        [global::ProtoBuf.ProtoMember(16)]
+        public long valueDate
+        {
+            get { return __pbn__valueDate.GetValueOrDefault(); }
+            set { __pbn__valueDate = value; }
+        }
+        public bool ShouldSerializevalueDate() => __pbn__valueDate != null;
+        public void ResetvalueDate() => __pbn__valueDate = null;
+        private long? __pbn__valueDate;
+
+        [global::ProtoBuf.ProtoMember(17, IsRequired = true)]
+        public long docDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(18, IsRequired = true)]
+        public string docNumber { get; set; }
+
+        [global::ProtoBuf.ProtoMember(19)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string correspondentDetails
+        {
+            get { return __pbn__correspondentDetails ?? ""; }
+            set { __pbn__correspondentDetails = value; }
+        }
+        public bool ShouldSerializecorrespondentDetails() => __pbn__correspondentDetails != null;
+        public void ResetcorrespondentDetails() => __pbn__correspondentDetails = null;
+        private string __pbn__correspondentDetails;
+
+        [global::ProtoBuf.ProtoMember(20, IsRequired = true)]
+        public string accountFrom { get; set; }
+
+        [global::ProtoBuf.ProtoMember(21, Name = @"outcome", IsRequired = true)]
+        public bool Outcome { get; set; }
+
+        [global::ProtoBuf.ProtoMember(22, Name = @"external")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string External
+        {
+            get { return __pbn__External ?? ""; }
+            set { __pbn__External = value; }
+        }
+        public bool ShouldSerializeExternal() => __pbn__External != null;
+        public void ResetExternal() => __pbn__External = null;
+        private string __pbn__External;
+
+        [global::ProtoBuf.ProtoMember(23, IsRequired = true)]
+        public string externalKey { get; set; }
+
+        [global::ProtoBuf.ProtoMember(24, IsRequired = true)]
+        public long externalSystemId { get; set; }
+
+        [global::ProtoBuf.ProtoMember(25)]
+        public long externalServiceId
+        {
+            get { return __pbn__externalServiceId.GetValueOrDefault(); }
+            set { __pbn__externalServiceId = value; }
+        }
+        public bool ShouldSerializeexternalServiceId() => __pbn__externalServiceId != null;
+        public void ResetexternalServiceId() => __pbn__externalServiceId = null;
+        private long? __pbn__externalServiceId;
+
+        [global::ProtoBuf.ProtoMember(26, IsRequired = true)]
+        public string toAccount { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class WithdrawalAdvcashResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"fault")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Fault
+        {
+            get { return __pbn__Fault ?? ""; }
+            set { __pbn__Fault = value; }
+        }
+        public bool ShouldSerializeFault() => __pbn__Fault != null;
+        public void ResetFault() => __pbn__Fault = null;
+        private string __pbn__Fault;
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"user_id", IsRequired = true)]
+        public long UserId { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"user_name", IsRequired = true)]
+        public string UserName { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4, Name = @"id", IsRequired = true)]
+        public long Id { get; set; }
+
+        [global::ProtoBuf.ProtoMember(5, Name = @"state", IsRequired = true)]
+        public WithdrawalCoinResponse.State State { get; set; } = WithdrawalCoinResponse.State.New;
+
+        [global::ProtoBuf.ProtoMember(6, Name = @"create_date", IsRequired = true)]
+        public long CreateDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(7, Name = @"last_modify_date", IsRequired = true)]
+        public long LastModifyDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(8, Name = @"verification_type")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string VerificationType
+        {
+            get { return __pbn__VerificationType ?? ""; }
+            set { __pbn__VerificationType = value; }
+        }
+        public bool ShouldSerializeVerificationType() => __pbn__VerificationType != null;
+        public void ResetVerificationType() => __pbn__VerificationType = null;
+        private string __pbn__VerificationType;
+
+        [global::ProtoBuf.ProtoMember(9, Name = @"verification_data")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string VerificationData
+        {
+            get { return __pbn__VerificationData ?? ""; }
+            set { __pbn__VerificationData = value; }
+        }
+        public bool ShouldSerializeVerificationData() => __pbn__VerificationData != null;
+        public void ResetVerificationData() => __pbn__VerificationData = null;
+        private string __pbn__VerificationData;
+
+        [global::ProtoBuf.ProtoMember(10, Name = @"comment")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Comment
+        {
+            get { return __pbn__Comment ?? ""; }
+            set { __pbn__Comment = value; }
+        }
+        public bool ShouldSerializeComment() => __pbn__Comment != null;
+        public void ResetComment() => __pbn__Comment = null;
+        private string __pbn__Comment;
+
+        [global::ProtoBuf.ProtoMember(11, Name = @"description", IsRequired = true)]
+        public string Description { get; set; }
+
+        [global::ProtoBuf.ProtoMember(12, Name = @"amount", IsRequired = true)]
+        public string Amount { get; set; }
+
+        [global::ProtoBuf.ProtoMember(13, Name = @"currency", IsRequired = true)]
+        public string Currency { get; set; }
+
+        [global::ProtoBuf.ProtoMember(14, Name = @"account_to", IsRequired = true)]
+        public string AccountTo { get; set; }
+
+        [global::ProtoBuf.ProtoMember(15)]
+        public long acceptDate
+        {
+            get { return __pbn__acceptDate.GetValueOrDefault(); }
+            set { __pbn__acceptDate = value; }
+        }
+        public bool ShouldSerializeacceptDate() => __pbn__acceptDate != null;
+        public void ResetacceptDate() => __pbn__acceptDate = null;
+        private long? __pbn__acceptDate;
+
+        [global::ProtoBuf.ProtoMember(16)]
+        public long valueDate
+        {
+            get { return __pbn__valueDate.GetValueOrDefault(); }
+            set { __pbn__valueDate = value; }
+        }
+        public bool ShouldSerializevalueDate() => __pbn__valueDate != null;
+        public void ResetvalueDate() => __pbn__valueDate = null;
+        private long? __pbn__valueDate;
+
+        [global::ProtoBuf.ProtoMember(17, IsRequired = true)]
+        public long docDate { get; set; }
+
+        [global::ProtoBuf.ProtoMember(18, IsRequired = true)]
+        public string docNumber { get; set; }
+
+        [global::ProtoBuf.ProtoMember(19)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string correspondentDetails
+        {
+            get { return __pbn__correspondentDetails ?? ""; }
+            set { __pbn__correspondentDetails = value; }
+        }
+        public bool ShouldSerializecorrespondentDetails() => __pbn__correspondentDetails != null;
+        public void ResetcorrespondentDetails() => __pbn__correspondentDetails = null;
+        private string __pbn__correspondentDetails;
+
+        [global::ProtoBuf.ProtoMember(20, IsRequired = true)]
+        public string accountFrom { get; set; }
+
+        [global::ProtoBuf.ProtoMember(21, Name = @"outcome", IsRequired = true)]
+        public bool Outcome { get; set; }
+
+        [global::ProtoBuf.ProtoMember(22, Name = @"external")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string External
+        {
+            get { return __pbn__External ?? ""; }
+            set { __pbn__External = value; }
+        }
+        public bool ShouldSerializeExternal() => __pbn__External != null;
+        public void ResetExternal() => __pbn__External = null;
+        private string __pbn__External;
+
+        [global::ProtoBuf.ProtoMember(23, IsRequired = true)]
+        public string externalKey { get; set; }
+
+        [global::ProtoBuf.ProtoMember(24, IsRequired = true)]
+        public long externalSystemId { get; set; }
+
+        [global::ProtoBuf.ProtoMember(25)]
+        public long externalServiceId
+        {
+            get { return __pbn__externalServiceId.GetValueOrDefault(); }
+            set { __pbn__externalServiceId = value; }
+        }
+        public bool ShouldSerializeexternalServiceId() => __pbn__externalServiceId != null;
+        public void ResetexternalServiceId() => __pbn__externalServiceId = null;
+        private long? __pbn__externalServiceId;
+
+        [global::ProtoBuf.ProtoMember(26, IsRequired = true)]
+        public string toAccount { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateSubscribeOrderRawChannelRequest : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"expire_control", IsRequired = true)]
+        public RequestExpired ExpireControl { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2, IsRequired = true)]
+        public SubscribeType subscribe_type { get; set; } = SubscribeType.OnlyEvents;
+
+        [global::ProtoBuf.ProtoContract()]
+        public enum SubscribeType
+        {
+            [global::ProtoBuf.ProtoEnum(Name = @"ONLY_EVENTS")]
+            OnlyEvents = 1,
+            [global::ProtoBuf.ProtoEnum(Name = @"WITH_INITIAL_STATE")]
+            WithInitialState = 2,
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateOrderRawNotification : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"data")]
+        public global::System.Collections.Generic.List<PrivateOrderRawEvent> Datas { get; } = new global::System.Collections.Generic.List<PrivateOrderRawEvent>();
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateOrderRawChannelSubscribedResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"data")]
+        public global::System.Collections.Generic.List<PrivateOrderRawEvent> Datas { get; } = new global::System.Collections.Generic.List<PrivateOrderRawEvent>();
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateOrderRawEvent : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, IsRequired = true)]
+        public OrderType order_type { get; set; } = OrderType.Bid;
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"id", IsRequired = true)]
+        public long Id { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"timestamp", IsRequired = true)]
+        public long Timestamp { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4, Name = @"price")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Price
+        {
+            get { return __pbn__Price ?? ""; }
+            set { __pbn__Price = value; }
+        }
+        public bool ShouldSerializePrice() => __pbn__Price != null;
+        public void ResetPrice() => __pbn__Price = null;
+        private string __pbn__Price;
+
+        [global::ProtoBuf.ProtoMember(5, Name = @"quantity", IsRequired = true)]
+        public string Quantity { get; set; }
+
+        [global::ProtoBuf.ProtoMember(6, Name = @"currency_pair", IsRequired = true)]
+        public string CurrencyPair { get; set; }
+
+        [global::ProtoBuf.ProtoContract()]
+        public enum OrderType
+        {
+            [global::ProtoBuf.ProtoEnum(Name = @"BID")]
+            Bid = 1,
+            [global::ProtoBuf.ProtoEnum(Name = @"ASK")]
+            Ask = 2,
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateSubscribeTradeChannelRequest : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"expire_control", IsRequired = true)]
+        public RequestExpired ExpireControl { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateTradeChannelSubscribedResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"data")]
+        public global::System.Collections.Generic.List<PrivateTradeEvent> Datas { get; } = new global::System.Collections.Generic.List<PrivateTradeEvent>();
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateTradeNotification : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"data")]
+        public global::System.Collections.Generic.List<PrivateTradeEvent> Datas { get; } = new global::System.Collections.Generic.List<PrivateTradeEvent>();
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateTradeEvent : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"id", IsRequired = true)]
+        public long Id { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2, IsRequired = true)]
+        public TradeType trade_type { get; set; } = TradeType.Buy;
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"timestamp", IsRequired = true)]
+        public long Timestamp { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4, Name = @"price", IsRequired = true)]
+        public string Price { get; set; }
+
+        [global::ProtoBuf.ProtoMember(5, Name = @"quantity", IsRequired = true)]
+        public string Quantity { get; set; }
+
+        [global::ProtoBuf.ProtoMember(6, Name = @"order_buy_id")]
+        public long OrderBuyId
+        {
+            get { return __pbn__OrderBuyId.GetValueOrDefault(); }
+            set { __pbn__OrderBuyId = value; }
+        }
+        public bool ShouldSerializeOrderBuyId() => __pbn__OrderBuyId != null;
+        public void ResetOrderBuyId() => __pbn__OrderBuyId = null;
+        private long? __pbn__OrderBuyId;
+
+        [global::ProtoBuf.ProtoMember(7, Name = @"order_sell_id")]
+        public long OrderSellId
+        {
+            get { return __pbn__OrderSellId.GetValueOrDefault(); }
+            set { __pbn__OrderSellId = value; }
+        }
+        public bool ShouldSerializeOrderSellId() => __pbn__OrderSellId != null;
+        public void ResetOrderSellId() => __pbn__OrderSellId = null;
+        private long? __pbn__OrderSellId;
+
+        [global::ProtoBuf.ProtoMember(8, Name = @"currency_pair", IsRequired = true)]
+        public string CurrencyPair { get; set; }
+
+        [global::ProtoBuf.ProtoContract()]
+        public enum TradeType
+        {
+            [global::ProtoBuf.ProtoEnum(Name = @"BUY")]
+            Buy = 1,
+            [global::ProtoBuf.ProtoEnum(Name = @"SELL")]
+            Sell = 2,
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateUnsubscribeRequest : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"expire_control", IsRequired = true)]
+        public RequestExpired ExpireControl { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2, IsRequired = true)]
+        public ChannelType channel_type { get; set; } = ChannelType.PrivateOrderRaw;
+
+        [global::ProtoBuf.ProtoContract()]
+        public enum ChannelType
+        {
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_ORDER_RAW")]
+            PrivateOrderRaw = 1,
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_TRADE")]
+            PrivateTrade = 2,
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateChannelUnsubscribedResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"type", IsRequired = true)]
+        public PrivateUnsubscribeRequest.ChannelType Type { get; set; } = PrivateUnsubscribeRequest.ChannelType.PrivateOrderRaw;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public partial class WsRequestMetaData : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
@@ -1590,6 +2598,22 @@ namespace protobuf.ws
             TradeHistory = 18,
             [global::ProtoBuf.ProtoEnum(Name = @"MARKET_ORDER")]
             MarketOrder = 19,
+            [global::ProtoBuf.ProtoEnum(Name = @"WALLET_ADDRESS")]
+            WalletAddress = 20,
+            [global::ProtoBuf.ProtoEnum(Name = @"WITHDRAWAL_COIN")]
+            WithdrawalCoin = 21,
+            [global::ProtoBuf.ProtoEnum(Name = @"WITHDRAWAL_PAYEER")]
+            WithdrawalPayeer = 22,
+            [global::ProtoBuf.ProtoEnum(Name = @"WITHDRAWAL_CAPITALIST")]
+            WithdrawalCapitalist = 23,
+            [global::ProtoBuf.ProtoEnum(Name = @"WITHDRAWAL_ADVCASH")]
+            WithdrawalAdvcash = 24,
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_SUBSCRIBE_ORDER_RAW")]
+            PrivateSubscribeOrderRaw = 25,
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_SUBSCRIBE_TRADE")]
+            PrivateSubscribeTrade = 26,
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_UNSUBSCRIBE")]
+            PrivateUnsubscribe = 27,
         }
 
     }
@@ -1668,6 +2692,26 @@ namespace protobuf.ws
             TradeHistoryResponse = 24,
             [global::ProtoBuf.ProtoEnum(Name = @"MARKET_ORDER_RESPONSE")]
             MarketOrderResponse = 25,
+            [global::ProtoBuf.ProtoEnum(Name = @"WALLET_ADDRESS_RESPONSE")]
+            WalletAddressResponse = 26,
+            [global::ProtoBuf.ProtoEnum(Name = @"WITHDRAWAL_COIN_RESPONSE")]
+            WithdrawalCoinResponse = 27,
+            [global::ProtoBuf.ProtoEnum(Name = @"WITHDRAWAL_PAYEER_RESPONSE")]
+            WithdrawalPayeerResponse = 28,
+            [global::ProtoBuf.ProtoEnum(Name = @"WITHDRAWAL_CAPITALIST_RESPONSE")]
+            WithdrawalCapitalistResponse = 29,
+            [global::ProtoBuf.ProtoEnum(Name = @"WITHDRAWAL_ADVCASH_RESPONSE")]
+            WithdrawalAdvcashResponse = 30,
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_ORDER_RAW_CHANNEL_SUBSCRIBED")]
+            PrivateOrderRawChannelSubscribed = 31,
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_TRADE_CHANNEL_SUBSCRIBED")]
+            PrivateTradeChannelSubscribed = 32,
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_ORDER_RAW_NOTIFY")]
+            PrivateOrderRawNotify = 33,
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_TRADE_NOTIFY")]
+            PrivateTradeNotify = 34,
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_CHANNEL_UNSUBSCRIBED")]
+            PrivateChannelUnsubscribed = 35,
         }
 
     }

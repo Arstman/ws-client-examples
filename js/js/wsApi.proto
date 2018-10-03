@@ -712,6 +712,93 @@ message WithdrawalAdvcashResponse {
     required string toAccount = 26;
 }
 
+// Subscription to orderbook changes - private api
+message PrivateSubscribeOrderRawChannelRequest {
+    // PRIVATE_SUBSCRIBE_ORDER_RAW
+    enum SubscribeType {
+        ONLY_EVENTS = 1;
+        WITH_INITIAL_STATE = 2;
+    }
+    required RequestExpired expire_control = 1;
+    required SubscribeType subscribe_type = 2 [default = ONLY_EVENTS];
+}
+
+message PrivateOrderRawNotification {
+    // PRIVATE_ORDER_RAW_NOTIFY
+    repeated PrivateOrderRawEvent data = 1;
+}
+
+message PrivateOrderRawChannelSubscribedResponse {
+    // PRIVATE_ORDER_RAW_CHANNEL_SUBSCRIBED
+    repeated PrivateOrderRawEvent data = 1;
+}
+
+
+message PrivateOrderRawEvent {
+    enum OrderType {
+        BID = 1;
+        ASK = 2;
+    }
+    required OrderType order_type = 1 [default = BID];
+    required int64 id = 2;
+
+    // timestamp of the last order's change
+    required int64 timestamp = 3;
+    optional string price = 4;
+
+    // zero when order is removed from orderbook (cancelled or traded)
+    required string quantity = 5;
+    required string currency_pair = 6;
+}
+
+
+// Subscription to trades - private api
+message PrivateSubscribeTradeChannelRequest {
+    // PRIVATE_SUBSCRIBE_TRADE
+    required RequestExpired expire_control = 1;
+}
+
+message PrivateTradeChannelSubscribedResponse {
+    // TRADE_CHANNEL_SUBSCRIBED
+    repeated PrivateTradeEvent data = 1;
+}
+
+message PrivateTradeNotification {
+    // PRIVATE_TRADE_NOTIFY
+    repeated PrivateTradeEvent data = 1;
+}
+
+message PrivateTradeEvent {
+    enum TradeType {
+        BUY = 1;
+        SELL = 2;
+    }
+    required int64 id = 1;
+    required TradeType trade_type = 2 [default = BUY];
+    required int64 timestamp = 3;
+    required string price = 4;
+    required string quantity = 5;
+    optional int64 order_buy_id = 6;
+    optional int64 order_sell_id = 7;
+    required string currency_pair = 8;
+}
+
+// Unsubscribe from channel
+message PrivateUnsubscribeRequest {
+    // PRIVATE_UNSUBSCRIBE
+    enum ChannelType {
+        PRIVATE_ORDER_RAW = 1;
+        PRIVATE_TRADE = 2;
+    }
+    required RequestExpired expire_control = 1;
+    required ChannelType channel_type = 2;
+}
+
+message PrivateChannelUnsubscribedResponse {
+    // PRIVATE_CHANNEL_UNSUBSCRIBED
+    required PrivateUnsubscribeRequest.ChannelType type = 1;
+}
+
 message WsRequestMetaData {
     enum WsRequestMsgType {
         SUBSCRIBE_TICKER = 1;
@@ -738,6 +825,10 @@ message WsRequestMetaData {
         WITHDRAWAL_PAYEER = 22;
         WITHDRAWAL_CAPITALIST = 23;
         WITHDRAWAL_ADVCASH = 24;
+        PRIVATE_SUBSCRIBE_ORDER_RAW = 25;
+        PRIVATE_SUBSCRIBE_TRADE = 26;
+        PRIVATE_UNSUBSCRIBE = 27;
+
     }
     required WsRequestMsgType request_type = 1;
     optional string token = 2;
@@ -777,6 +868,11 @@ message WsResponseMetaData {
         WITHDRAWAL_PAYEER_RESPONSE = 28;
         WITHDRAWAL_CAPITALIST_RESPONSE = 29;
         WITHDRAWAL_ADVCASH_RESPONSE = 30;
+        PRIVATE_ORDER_RAW_CHANNEL_SUBSCRIBED = 31;
+        PRIVATE_TRADE_CHANNEL_SUBSCRIBED = 32;
+        PRIVATE_ORDER_RAW_NOTIFY = 33;
+        PRIVATE_TRADE_NOTIFY = 34;
+        PRIVATE_CHANNEL_UNSUBSCRIBED = 35;
     }
     required WsResponseMsgType response_type = 1;
     optional string token = 2;

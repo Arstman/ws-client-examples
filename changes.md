@@ -1,3 +1,15 @@
+# 2018-10-03
+ + Added private channels (only YOUR orders and trades for all currency pairs for convenience):
+   -  PRIVATE_SUBSCRIBE_ORDER_RAW;
+   -  PRIVATE_SUBSCRIBE_TRADE;
+   -  PRIVATE_UNSUBSCRIBE;
+ + Added private api requests:
+   -  WALLET_ADDRESS;
+   -  WITHDRAWAL_COIN;
+   -  WITHDRAWAL_PAYEER;
+   -  WITHDRAWAL_CAPITALIST;
+   -  WITHDRAWAL_ADVCASH;
+
 # 2018-08-31
  + Added private api requests:
    - CLIENT_ORDER;
