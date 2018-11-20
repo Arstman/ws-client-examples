@@ -6,8 +6,8 @@ import LivecoinWSapi_pb2
 import hashlib
 import hmac
 
-MY_API_KEY = "sTaMP6f2zMdhjKQva7SSaZENStXx2kbk"
-MY_SECRET_KEY = b"z4TJJqYTgWqy2KGxuD14TUpddZmVRHxR"
+MY_API_KEY = "cvRpYTKV4h45fQfPrZYYTcGGkEJQ5ptV"
+MY_SECRET_KEY = b"5PkrJZ8jNMczpG6pQXBZFMB15f9eja9j"
 
 NEED_TOP_ORDERS = 5
 

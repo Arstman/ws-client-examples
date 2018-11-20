@@ -20,8 +20,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class WsClientExample {
-    public static final String MY_API_KEY = "sTaMP6f2zMdhjKQva7SSaZENStXx2kbk";
-    public static final String MY_SECRET_KEY = "z4TJJqYTgWqy2KGxuD14TUpddZmVRHxR";
+    public static final String MY_API_KEY = "cvRpYTKV4h45fQfPrZYYTcGGkEJQ5ptV";
+    public static final String MY_SECRET_KEY = "5PkrJZ8jNMczpG6pQXBZFMB15f9eja9j";
 
     private WebSocket webSocket;
     private Gson mapper = new Gson();

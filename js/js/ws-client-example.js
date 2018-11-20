@@ -2,13 +2,14 @@
 
 window.onload = function() {
 
-    var MY_API_KEY = "sTaMP6f2zMdhjKQva7SSaZENStXx2kbk";
-    var MY_SECRET_KEY = "z4TJJqYTgWqy2KGxuD14TUpddZmVRHxR";
+    var MY_API_KEY = "cvRpYTKV4h45fQfPrZYYTcGGkEJQ5ptV";
+    var MY_SECRET_KEY = "5PkrJZ8jNMczpG6pQXBZFMB15f9eja9j";
 
     protobuf.load("js/wsApi.proto", function (err, root) {
         var socket = connect("wss://ws.api.livecoin.net/ws/beta2");
         socket.onopen = function () {
             console.log("Connection established.");
+            pingRequest("001");
             login("login", MY_API_KEY, MY_SECRET_KEY, 300000);
             tickerSubscribe("token","BTC/USD", null);
             orderBookSubscribe("token1", "BTC/USD", 1);
@@ -114,6 +115,11 @@ window.onload = function() {
                 currencyPair: cp
             };
             doMessage(token, subscriptionPayload, "protobuf.ws.UnsubscribeRequest", WsRequestMeta.WsRequestMsgType.UNSUBSCRIBE);
+        };
+
+        var pingRequest = function (token) {
+            var WsRequestMeta = root.lookupType("protobuf.ws.WsRequestMetaData");
+            doMessage(token, {}, "protobuf.ws.PingRequest", WsRequestMeta.WsRequestMsgType.PING_REQUEST);
         };
 
         var doPrivateMessage = function(secretKey, token, msgPayload, lookupTypeValue, msgType) {
@@ -599,6 +605,285 @@ window.onload = function() {
             doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalAdvcashRequest", requestType)
         };
 
+        var withdrawalYandex = function(token, secretKey, wallet, currency, amount, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_YANDEX;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                wallet: wallet,
+                currency: currency,
+                amount: amount
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalYandexRequest", requestType)
+        };
+
+        var withdrawalQiwi = function(token, secretKey, wallet, currency, amount, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_QIWI;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                wallet: wallet,
+                currency: currency,
+                amount: amount
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalQiwiRequest", requestType)
+        };
+
+        var withdrawalCard = function(token, secretKey, account, currency, amount, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_CARD;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                account: account,
+                currency: currency,
+                amount: amount
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalCardRequest", requestType)
+        };
+
+        var withdrawalMastercard = function(token, secretKey, currency, amount, cardNumber, cardHolder, cardHolderCountry, cardHolderCity, cardHolderDOB, cardHolderMobilePhone, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_MASTERCARD;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                currency: currency,
+                amount: amount,
+                cardNumber: cardNumber,
+                cardHolder: cardHolder,
+                cardHolderCountry: cardHolderCountry,
+                cardHolderCity: cardHolderCity,
+                cardHolderDob: cardHolderDOB,
+                cardHolderMobilePhone: cardHolderMobilePhone
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalMastercardRequest", requestType)
+        };
+
+        var withdrawalOkpay = function(token, secretKey, ttl, wallet, currency, amount, invoice) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_OKPAY;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                wallet: wallet,
+                currency: currency,
+                amount: amount,
+                invoice: invoice
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalOkpayRequest", requestType)
+        };
+
+        var withdrawalOkpay = function(token, secretKey, wallet, currency, amount, invoice, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_OKPAY;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                wallet: wallet,
+                currency: currency,
+                amount: amount,
+                invoice: invoice
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalOkpayRequest", requestType)
+        };
+
+        var withdrawalPerfectMoney = function(token, secretKey, wallet, currency, amount, protectCode, protectPeriod, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.WITHDRAWAL_PERFECTMONEY;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                wallet: wallet,
+                currency: currency,
+                amount: amount,
+                protectCode: protectCode,
+                protectPeriod: protectPeriod
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.WithdrawalPerfectMoneyRequest", requestType)
+        };
+
+        var voucherMake = function(token, secretKey, description, currency, amount, forUser, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.VOUCHER_MAKE;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                description: description,
+                currency: currency,
+                amount: amount,
+                forUser: forUser
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.VoucherMakeRequest", requestType)
+        };
+
+        var voucherAmount = function(token, secretKey, voucherCode, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.VOUCHER_AMOUNT;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                voucherCode: voucherCode
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.VoucherAmountRequest", requestType)
+        };
+
+        var voucherRedeem = function(token, secretKey, voucherCode, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.VOUCHER_REDEEM;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                voucherCode: voucherCode
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.VoucherRedeemRequest", requestType)
+        };
+
+        var ordersCancel = function(token, secretKey, currencyPairs, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var requestType = WsRequestMetaData.WsRequestMsgType.CANCEL_ORDERS;
+
+            var msgPayload = {
+                expireControl: requestExpired,
+                currencyPairs: currencyPairs
+            };
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.CancelOrdersRequest", requestType)
+        };
+
         var privateOrderRawSubscribe = function (token, secretKey, ttl, subscribeType) {
             var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
             var expiredPayload = {
@@ -759,7 +1044,7 @@ window.onload = function() {
                 } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.ERROR) {
                     MessageClass = root.lookupType("protobuf.ws.ErrorResponse");
                     message = MessageClass.decode(wsResponseMessage.msg);
-                    onError(message);
+                    onError({token: wsResponseMessage.meta.token, msg:message});
                 } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.TICKER_NOTIFY) {
                     MessageClass = root.lookupType("protobuf.ws.TickerNotification");
                     message = MessageClass.decode(wsResponseMessage.msg);
@@ -799,7 +1084,7 @@ window.onload = function() {
                 } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.CANCEL_LIMIT_ORDER_RESPONSE) {
                     MessageClass = root.lookupType("protobuf.ws.CancelLimitOrderResponse");
                     message = MessageClass.decode(wsResponseMessage.msg);
-                    onCancelLimitOrder(message)
+                    onCancelLimitOrder([wsResponseMessage.meta.token, message])
                 } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.BALANCE_RESPONSE) {
                     MessageClass = root.lookupType("protobuf.ws.BalanceResponse");
                     message = MessageClass.decode(wsResponseMessage.msg);
@@ -860,6 +1145,50 @@ window.onload = function() {
                     MessageClass = root.lookupType("protobuf.ws.WithdrawalCapitalistResponse");
                     message = MessageClass.decode(wsResponseMessage.msg);
                     onWithdrawalAdvcash(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WITHDRAWAL_YANDEX_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WithdrawalYandexResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWithdrawalYandex(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WITHDRAWAL_QIWI_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WithdrawalQiwiResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWithdrawalQiwi(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WITHDRAWAL_CARD_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WithdrawalCardResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWithdrawalCard(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WITHDRAWAL_MASTERCARD_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WithdrawalMastercardResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWithdrawalMastercard(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WITHDRAWAL_OKPAY_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WithdrawalOkpayResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWithdrawalOkpay(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.WITHDRAWAL_PERFECTMONEY_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.WithdrawalPerfectMoneyResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onWithdrawalPerfectMoney(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.VOUCHER_MAKE_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.VoucherMakeResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onVoucherMake({token: wsResponseMessage.meta.token, msg:message})
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.VOUCHER_AMOUNT_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.VoucherAmountResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onVoucherAmount({token: wsResponseMessage.meta.token, msg:message})
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.VOUCHER_REDEEM_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.VoucherRedeemResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onVoucherRedeem({token: wsResponseMessage.meta.token, msg:message})
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.CANCEL_ORDERS_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.CancelOrdersResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onCancelOrders({token: wsResponseMessage.meta.token, msg:message})
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.PONG_RESPONSE) {
+                    MessageClass = root.lookupType("protobuf.ws.PongResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onPongResponse({token: wsResponseMessage.meta.token, msg:message})
                 }
             }
         };
@@ -914,17 +1243,17 @@ window.onload = function() {
         }
 
         function onUnsubscribe(msg) {
-            console.log("channel unsubscribed: " + JSON.stringify(msg))
+            console.log("channel unsubscribed: " + JSON.stringify(msg));
             //here you can make your trade decision
         }
 
         function onPrivateChannelSubscribe(msg) {
-            console.log("private channel subscribed: " + JSON.stringify(msg))
+            console.log("private channel subscribed: " + JSON.stringify(msg));
             //here you can make your trade decision
         }
 
         function onPrivateChanneUnsubscribe(msg) {
-            console.log("private channel unsubscribed: " + JSON.stringify(msg))
+            console.log("private channel unsubscribed: " + JSON.stringify(msg));
             //here you can make your trade decision
         }
 
@@ -949,22 +1278,30 @@ window.onload = function() {
             var sellTradeType = root.lookupType("protobuf.ws.TradeHistoryRequest").Types.SELL;
             var buyTradeType = root.lookupType("protobuf.ws.TradeHistoryRequest").Types.BUY;
             tradeHistory("tradeHistory", MY_SECRET_KEY, start, end, [sellTradeType,buyTradeType], 100, 0, 30000);
-            var marketType = root.lookupType("protobuf.ws.ClientOrdersRequest").OrderType.BID;
+            // var marketType = root.lookupType("protobuf.ws.ClientOrdersRequest").OrderType.BID;
             // marketOrder("marketOrder",MY_SECRET_KEY, "BTC/USD", "1", marketType, 30000);
             // walletAddress("Wallet", MY_SECRET_KEY, "BTC", 30000);
             // withdrawalCoin("out/coin", MY_SECRET_KEY, "34Adcp7UbL2sdBqaDc9s7SCisX7C5EALw3", "BTC", "0.002", null, 30000);
             // withdrawalPayeer("out/payeer", MY_SECRET_KEY, "P12345678", "USD", "0.01", null, null, null, 30000);
             // withdrawalCapitalist("out/capitalist", MY_SECRET_KEY, "U0000001", "USD", "0.01", 30000);
             // withdrawalAdvcash("out/advcash", MY_SECRET_KEY, "U123456789012", "USD", "0.01", 30000);
+            // withdrawalYandex("out/yandex",MY_SECRET_KEY, "410011234567890", "RUR", "100", 30000);
+            // withdrawalQiwi("out/qiwi",MY_SECRET_KEY, "79535316883", "RUR", "100", 30000);
+            // withdrawalCard("out/card",MY_SECRET_KEY, "1234123412341234", "RUR", "100", 30000);
+            // withdrawalMastercard("out/mastercard",MY_SECRET_KEY, "USD", "10","1234123412341234","SAM IVANOV", "RU", "Moscow", "1961-04-22", "79112345678", 30000);
+            // withdrawalOkpay("out/okpay",MY_SECRET_KEY, "OK123456789", "USD", "0.01", null, 30000);
+            // withdrawalPerfectMoney("out/perfectmoney",MY_SECRET_KEY, "U1234567", "USD", "0.01", "12345", 1, 30000);
+            // voucherMake("make voucher", MY_SECRET_KEY, "test request", "RUR", "100", null, 30000);
+            // ordersCancel("cancel orders", MY_SECRET_KEY, ["BTC/USD"], 30000)
             var subscribeType = root.lookupType("protobuf.ws.PrivateSubscribeOrderRawChannelRequest").SubscribeType.WITH_INITIAL_STATE;
-            privateOrderRawSubscribe("private order raw channel", MY_SECRET_KEY, 30000, subscribeType);
             privateTradeSubscribe("private trade channel", MY_SECRET_KEY, 30000);
+            privateOrderRawSubscribe("private order raw channel", MY_SECRET_KEY, 30000, subscribeType);
         }
 
         function onPutLimitOrder(msg) {
             console.log("The order limit has been set: " + JSON.stringify(msg));
             //here you can make your trade decision
-            cancelLimitOrder("cancel", MY_SECRET_KEY, Number.parseInt(msg.orderId),"BTC/USD",30000)
+            // cancelLimitOrder("cancel", MY_SECRET_KEY, Number.parseInt(msg.orderId),"BTC/USD",30000)
         }
 
         function onCancelLimitOrder(msg) {
@@ -1045,6 +1382,66 @@ window.onload = function() {
         function onWithdrawalAdvcash(msg) {
             //here you can make your trade decision
             console.log("WithdrawalAdvcash: " + JSON.stringify(msg))
+        }
+
+        function onWithdrawalYandex(msg) {
+            //here you can make your trade decision
+            console.log("WithdrawalYandex: " + JSON.stringify(msg))
+        }
+
+        function onWithdrawalQiwi(msg) {
+            //here you can make your trade decision
+            console.log("WithdrawalQiwi: " + JSON.stringify(msg))
+        }
+
+        function onWithdrawalCard(msg) {
+            //here you can make your trade decision
+            console.log("WithdrawalCard: " + JSON.stringify(msg))
+        }
+
+        function onWithdrawalMastercard(msg) {
+            //here you can make your trade decision
+            console.log("WithdrawalMastercard: " + JSON.stringify(msg))
+        }
+
+        function onWithdrawalOkpay(msg) {
+            //here you can make your trade decision
+            console.log("WithdrawalOkpay: " + JSON.stringify(msg))
+        }
+
+        function onWithdrawalPerfectMoney(msg) {
+            //here you can make your trade decision
+            console.log("WithdrawalPerfectMoney: " + JSON.stringify(msg))
+        }
+
+        function onVoucherMake(msg) {
+            //here you can make your trade decision
+            console.log("VoucherMake: " + JSON.stringify(msg));
+            voucherAmount("voucher amount", MY_SECRET_KEY, msg.msg.voucherCode, 30000);
+            setTimeout(function(){
+                voucherRedeem("voucher redeem", MY_SECRET_KEY, msg.msg.voucherCode, 30000)
+            },1000)
+
+        }
+
+        function onVoucherAmount(msg) {
+            //here you can make your trade decision
+            console.log("VoucherAmount: " + JSON.stringify(msg))
+        }
+
+        function onVoucherRedeem(msg) {
+            //here you can make your trade decision
+            console.log("VoucherRedeem: " + JSON.stringify(msg))
+        }
+
+        function onCancelOrders(msg) {
+            //here you can make your trade decision
+            console.log("CancelOrders: " + JSON.stringify(msg))
+        }
+
+        function onPongResponse(response) {
+            response.time = new Date(Number(response.msg.pingTime)).toISOString();
+            console.log("PongResponse: " + JSON.stringify(response))
         }
 
         function connect(path) {

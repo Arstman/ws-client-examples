@@ -11,8 +11,8 @@ namespace ws_client
 {
     class WsClientExample : IDisposable
     {
-        public const string MY_API_KEY = "sTaMP6f2zMdhjKQva7SSaZENStXx2kbk";
-        public const string MY_SECRET_KEY = "z4TJJqYTgWqy2KGxuD14TUpddZmVRHxR";
+        public const string MY_API_KEY = "cvRpYTKV4h45fQfPrZYYTcGGkEJQ5ptV";
+        public const string MY_SECRET_KEY = "5PkrJZ8jNMczpG6pQXBZFMB15f9eja9j";
         private WebSocket ws;
 
         public WsClientExample(String url)
@@ -120,6 +120,7 @@ namespace ws_client
         private void WsClient_OnLogin()
         {
             Console.WriteLine("Login Successful");
+            WsClient_SubscribePrivateTrades(MY_SECRET_KEY, 30000);
             //here you can make your trade decision
         }
 
@@ -253,6 +254,41 @@ namespace ws_client
             sendRequest(request);
         }
 
+        private void WsClient_SubscribePrivateTrades(String secret, int ttl)
+        {
+            byte[] msg;
+
+            protobuf.ws.PrivateSubscribeTradeChannelRequest message = new protobuf.ws.PrivateSubscribeTradeChannelRequest()
+            {
+                ExpireControl = new protobuf.ws.RequestExpired
+                {
+                    Now = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds,
+                    Ttl = ttl
+                }
+            };
+
+            using (MemoryStream msgStream = new MemoryStream())
+            {
+                ProtoBuf.Serializer.Serialize(msgStream, message);
+                msg = msgStream.ToArray();
+            }
+            byte[] sign = ComputeHash(secret, msg);
+            var meta = new protobuf.ws.WsRequestMetaData
+            {
+                RequestType = protobuf.ws.WsRequestMetaData.WsRequestMsgType.PrivateSubscribeTrade,
+                Token = "Subscribe private trade channel request",
+                Sign = sign
+            };
+
+            protobuf.ws.WsRequest request = new protobuf.ws.WsRequest
+            {
+                Meta = meta,
+                Msg = msg
+            };
+
+            sendRequest(request);
+        }
+
         //here you can make your trade decision
 
         private void sendRequest(protobuf.ws.WsRequest request)
@@ -271,11 +307,11 @@ namespace ws_client
                 // unsubscribing from channels
                 // here you can make your trade decision
 
-                WsClient_Unsubscribe(protobuf.ws.UnsubscribeRequest.ChannelType.Ticker, "BTC/USD");
-                WsClient_Unsubscribe(protobuf.ws.UnsubscribeRequest.ChannelType.Trade, "BTC/USD");
+                //WsClient_Unsubscribe(protobuf.ws.UnsubscribeRequest.ChannelType.Ticker, "BTC/USD");
+                //WsClient_Unsubscribe(protobuf.ws.UnsubscribeRequest.ChannelType.Trade, "BTC/USD");
 
                 Thread.Sleep(2000);
-                ws.Close();
+                //ws.Close();
             }
         }
 
@@ -357,6 +393,27 @@ namespace ws_client
                 } else if (response.Meta.ResponseType == protobuf.ws.WsResponseMetaData.WsResponseMsgType.LoginResponse)
                 {
                     WsClient_OnLogin();
+                } else if(response.Meta.ResponseType == protobuf.ws.WsResponseMetaData.WsResponseMsgType.PrivateTradeChannelSubscribed)
+                {
+                    Console.WriteLine("Private Trades channel subscribed!");
+                    using (MemoryStream messageStream = new MemoryStream(response.Msg))
+                    {
+                        protobuf.ws.PrivateTradeChannelSubscribedResponse message = ProtoBuf.Serializer.Deserialize<protobuf.ws.PrivateTradeChannelSubscribedResponse>(messageStream);
+                        message.Datas.ForEach(delegate (protobuf.ws.PrivateTradeEvent evt) {
+                            performPrivateTradeEvent(evt);
+                        });
+                    }
+                } else if(response.Meta.ResponseType == protobuf.ws.WsResponseMetaData.WsResponseMsgType.PrivateTradeNotify)
+                {
+                    using (MemoryStream messageStream = new MemoryStream(response.Msg))
+                    {
+                        Console.WriteLine("Private Trades notification!");
+                        Console.WriteLine(ByteArrayToString(response.Msg));
+                        protobuf.ws.PrivateTradeNotification message = ProtoBuf.Serializer.Deserialize<protobuf.ws.PrivateTradeNotification>(messageStream);
+                        message.Datas.ForEach(delegate (protobuf.ws.PrivateTradeEvent evt) {
+                            performPrivateTradeEvent(evt);
+                        });
+                    }
                 }
 
                 // here you can make your trade decision
@@ -365,6 +422,23 @@ namespace ws_client
         }
 
         // parsing events
+
+        private void performPrivateTradeEvent(protobuf.ws.PrivateTradeEvent evt)
+        {
+            string text = evt.ToString();
+            text = text + ": {" +
+                "channelId: PrivateTrade" +
+                ", id:" + evt.Id +
+                ", tradeType: " + evt.trade_type.ToString() +
+                ", timestamp: " + evt.Timestamp +
+                ", price: " + evt.Price +
+                ", quantity:" + evt.Quantity +
+                ", orderSellId:" + evt.OrderSellId +
+                ", orderBuyId:" + evt.OrderBuyId +
+                ", currencyPair:" + evt.CurrencyPair + 
+                "}";
+            Console.WriteLine(text);
+        }
 
         private TickerEvent prepareTickerEvent(protobuf.ws.TickerEvent evt)
         {
