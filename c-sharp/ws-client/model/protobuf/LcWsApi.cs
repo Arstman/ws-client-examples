@@ -3791,6 +3791,8 @@ namespace protobuf.ws
             PrivateOrderRaw = 1,
             [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_TRADE")]
             PrivateTrade = 2,
+            [global::ProtoBuf.ProtoEnum(Name = @"PRIVATE_CHANGE_BALANCE")]
+            PrivateChangeBalance = 3,
         }
 
     }
@@ -3805,6 +3807,38 @@ namespace protobuf.ws
         [global::ProtoBuf.ProtoMember(1, Name = @"type", IsRequired = true)]
         public PrivateUnsubscribeRequest.ChannelType Type { get; set; } = PrivateUnsubscribeRequest.ChannelType.PrivateOrderRaw;
 
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateSubscribeBalanceChangeChannelRequest : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+        [global::ProtoBuf.ProtoMember(1, Name = @"expire_control", IsRequired = true)]
+        public RequestExpired ExpireControl { get; set; }
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateChangeBalanceChannelSubscribedResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"data")]
+        public global::System.Collections.Generic.List<BalanceResponse> Datas { get; } = new global::System.Collections.Generic.List<BalanceResponse>();
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class PrivateChangeBalanceNotification : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"data")]
+        public global::System.Collections.Generic.List<BalanceResponse> Datas { get; } = new global::System.Collections.Generic.List<BalanceResponse>();
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -3938,6 +3972,8 @@ namespace protobuf.ws
             CancelOrders = 36,
             [global::ProtoBuf.ProtoEnum(Name = @"PING_REQUEST")]
             PingRequest = 37,
+            [global::ProtoBuf.ProtoEnum(Name = @"SUBSCRIBE_BALANCE_CHANGE")]
+            SubscribeBalanceChange = 38,
         }
 
     }
@@ -4056,6 +4092,10 @@ namespace protobuf.ws
             CancelOrdersResponse = 44,
             [global::ProtoBuf.ProtoEnum(Name = @"PONG_RESPONSE")]
             PongResponse = 45,
+            [global::ProtoBuf.ProtoEnum(Name = @"BALANCE_CHANGE_CHANNEL_SUBSCRIBED")]
+            BalanceChangeChannelSubscribed = 46,
+            [global::ProtoBuf.ProtoEnum(Name = @"BALANCE_CHANGE_NOTIFY")]
+            BalanceChangeNotify = 47,
         }
 
     }

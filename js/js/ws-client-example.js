@@ -946,6 +946,26 @@ window.onload = function() {
             doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.PrivateUnsubscribeRequest", WsRequestMeta.WsRequestMsgType.PRIVATE_UNSUBSCRIBE);
         };
 
+        var privateBalanceChangeSubscribe = function (token, secretKey, ttl) {
+            var RequestExpired = root.lookupType("protobuf.ws.RequestExpired");
+            var expiredPayload = {
+                now:Date.now(),
+                ttl:ttl
+            };
+
+            var err = RequestExpired.verify(expiredPayload);
+            if(err) {
+                throw Error(err)
+            }
+            var WsRequestMetaData = root.lookupType("protobuf.ws.WsRequestMetaData");
+            var requestExpired = RequestExpired.create(expiredPayload);
+            var msgPayload = {
+                expireControl: requestExpired
+            };
+            var requestType = WsRequestMetaData.WsRequestMsgType.SUBSCRIBE_BALANCE_CHANGE;
+            doPrivateMessage(secretKey, token, msgPayload, "protobuf.ws.PrivateSubscribeBalanceChangeChannelRequest", requestType);
+        };
+
         socket.onclose = function (event) {
             if (event.wasClean) {
                 console.log('The connection is closed cleanly');
@@ -1013,7 +1033,14 @@ window.onload = function() {
                     if(message.data.length > 0) {
                         onPrivateTrade({data: message.data});
                     }
-                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.CHANNEL_UNSUBSCRIBED) {
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.BALANCE_CHANGE_CHANNEL_SUBSCRIBED) {
+                    MessageClass = root.lookupType("protobuf.ws.PrivateChangeBalanceChannelSubscribedResponse");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onPrivateChannelSubscribe({channelType: "privatechangebalance"});
+                    if(message.data.length > 0) {
+                        onPrivateBalanceChange({data: message.data});
+                    }
+                }else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.CHANNEL_UNSUBSCRIBED) {
                     MessageClass = root.lookupType("protobuf.ws.ChannelUnsubscribedResponse");
                     message = MessageClass.decode(wsResponseMessage.msg);
                     var UnsubscribeRequest = root.lookupType("protobuf.ws.UnsubscribeRequest");
@@ -1039,6 +1066,8 @@ window.onload = function() {
                         privateChannelType = "privateorderraw"
                     } else if (PrivateUnsubscribeRequest.ChannelType.PRIVATE_TRADE === message.type) {
                         privateChannelType = "privatetrade"
+                    }  else if (PrivateUnsubscribeRequest.ChannelType.PRIVATE_CHANGE_BALANCE === message.type) {
+                        privateChannelType = "privatechangebalance"
                     }
                     onPrivateChanneUnsubscribe({ channelType: privateChannelType});
                 } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.ERROR) {
@@ -1073,6 +1102,10 @@ window.onload = function() {
                     MessageClass = root.lookupType("protobuf.ws.PrivateTradeNotification");
                     message = MessageClass.decode(wsResponseMessage.msg);
                     onPrivateTrade(message)
+                } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.BALANCE_CHANGE_NOTIFY) {
+                    MessageClass = root.lookupType("protobuf.ws.PrivateChangeBalanceNotification");
+                    message = MessageClass.decode(wsResponseMessage.msg);
+                    onPrivateBalanceChange(message)
                 } else if (wsResponseMessage.meta.responseType === WsResponseMeta.WsResponseMsgType.LOGIN_RESPONSE) {
                     MessageClass = root.lookupType("protobuf.ws.LoginResponse");
                     message = MessageClass.decode(wsResponseMessage.msg);
@@ -1230,6 +1263,10 @@ window.onload = function() {
             console.log("private trade: " + JSON.stringify(event))
         }
 
+        function onPrivateBalanceChange(event) {
+            console.log("private change balance: " + JSON.stringify(event))
+        }
+
 
         function onError(msg) {
             console.log("Error: "  + JSON.stringify(msg))
@@ -1293,9 +1330,10 @@ window.onload = function() {
             // withdrawalPerfectMoney("out/perfectmoney",MY_SECRET_KEY, "U1234567", "USD", "0.01", "12345", 1, 30000);
             // voucherMake("make voucher", MY_SECRET_KEY, "test request", "RUR", "100", null, 30000);
             // ordersCancel("cancel orders", MY_SECRET_KEY, ["BTC/USD"], 30000)
-            var subscribeType = root.lookupType("protobuf.ws.PrivateSubscribeOrderRawChannelRequest").SubscribeType.WITH_INITIAL_STATE;
-            privateTradeSubscribe("private trade channel", MY_SECRET_KEY, 30000);
-            privateOrderRawSubscribe("private order raw channel", MY_SECRET_KEY, 30000, subscribeType);
+            // var subscribeType = root.lookupType("protobuf.ws.PrivateSubscribeOrderRawChannelRequest").SubscribeType.WITH_INITIAL_STATE;
+            // privateTradeSubscribe("private trade channel", MY_SECRET_KEY, 30000);
+            // privateOrderRawSubscribe("private order raw channel", MY_SECRET_KEY, 30000, subscribeType);
+            // privateBalanceChangeSubscribe("balance update channel", MY_SECRET_KEY, 30000)
         }
 
         function onPutLimitOrder(msg) {

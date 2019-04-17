@@ -1066,6 +1066,7 @@ message PrivateUnsubscribeRequest {
     enum ChannelType {
         PRIVATE_ORDER_RAW = 1;
         PRIVATE_TRADE = 2;
+        PRIVATE_CHANGE_BALANCE = 3;
     }
     required RequestExpired expire_control = 1;
     required ChannelType channel_type = 2;
@@ -1074,6 +1075,21 @@ message PrivateUnsubscribeRequest {
 message PrivateChannelUnsubscribedResponse {
     // PRIVATE_CHANNEL_UNSUBSCRIBED
     required PrivateUnsubscribeRequest.ChannelType type = 1;
+}
+
+message PrivateSubscribeBalanceChangeChannelRequest {
+    //SUBSCRIBE_BALANCE_CHANGE
+    required RequestExpired expire_control = 1;
+}
+
+message PrivateChangeBalanceChannelSubscribedResponse {
+    //BALANCE_CHANGE_CHANNEL_SUBSCRIBED
+    repeated BalanceResponse data = 1;
+}
+
+message PrivateChangeBalanceNotification {
+    //BALANCE_CHANGE_NOTIFY
+    repeated BalanceResponse data = 1;
 }
 
 message PongResponse {
@@ -1120,7 +1136,7 @@ message WsRequestMetaData {
         VOUCHER_REDEEM = 35;
         CANCEL_ORDERS = 36;
         PING_REQUEST = 37;
-
+        SUBSCRIBE_BALANCE_CHANGE = 38;
     }
     required WsRequestMsgType request_type = 1;
     optional string token = 2;
@@ -1175,6 +1191,8 @@ message WsResponseMetaData {
         VOUCHER_REDEEM_RESPONSE = 43;
         CANCEL_ORDERS_RESPONSE = 44;
         PONG_RESPONSE = 45;
+        BALANCE_CHANGE_CHANNEL_SUBSCRIBED = 46;
+        BALANCE_CHANGE_NOTIFY = 47;
     }
     required WsResponseMsgType response_type = 1;
     optional string token = 2;

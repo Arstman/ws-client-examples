@@ -29,3 +29,6 @@
 
 # 2018-08-08
  + Added c# and java examples
+
+# 2019-04-17
+ + Added private balance notification channel (SUBSCRIBE_BALANCE_CHANGE)
