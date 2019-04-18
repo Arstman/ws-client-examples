@@ -1,3 +1,7 @@
+
+# 2019-04-17
+ + Added private balance notification channel (SUBSCRIBE_BALANCE_CHANGE)
+ 
 # 2018-10-03
  + Added private channels (only YOUR orders and trades for all currency pairs for convenience):
    -  PRIVATE_SUBSCRIBE_ORDER_RAW;
@@ -29,6 +33,3 @@
 
 # 2018-08-08
  + Added c# and java examples
-
-# 2019-04-17
- + Added private balance notification channel (SUBSCRIBE_BALANCE_CHANGE)
