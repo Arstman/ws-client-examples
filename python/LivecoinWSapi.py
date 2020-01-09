@@ -329,7 +329,7 @@ def handleIn(rawmsg):
         event.ParseFromString(msg)
         onSuccessfullOrderPut(token, event.order_id, event.amount_left)
     elif msgtype == LivecoinWSapi_pb2.WsResponseMetaData.CANCEL_LIMIT_ORDER_RESPONSE:
-        event = LivecoinWSapi_pb2.OrderBookNotification()
+        event = LivecoinWSapi_pb2.CancelLimitOrderResponse()
         event.ParseFromString(msg)
         onSuccessfullOrderCancel(token, event.order_id, event.amount_left)
     elif msgtype == LivecoinWSapi_pb2.WsResponseMetaData.BALANCE_RESPONSE:

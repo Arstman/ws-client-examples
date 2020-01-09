@@ -1,3 +1,5 @@
+# 2020-01-09
+ * Fixed typo in LivecoinWSapi.py (OrderBookNotification instead of CancelLimitOrderResponse)
 
 # 2019-04-17
  + Added private balance notification channel (SUBSCRIBE_BALANCE_CHANGE)
